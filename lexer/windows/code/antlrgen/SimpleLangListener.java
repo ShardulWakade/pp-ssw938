@@ -1,6 +1,6 @@
+// Generated from .\SimpleLang.g4 by ANTLR 4.9.2
 package antlrgen;
 
-// Generated from .\SimpleLang.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -79,15 +79,41 @@ public interface SimpleLangListener extends ParseTreeListener {
 	 */
 	void exitProjectInterfaceDecl(SimpleLangParser.ProjectInterfaceDeclContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SimpleLangParser#constdecl}.
+	 * Enter a parse tree produced by the {@code intConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#constdecl}.
 	 * @param ctx the parse tree
 	 */
-	void enterConstdecl(SimpleLangParser.ConstdeclContext ctx);
+	void enterIntConstDecl(SimpleLangParser.IntConstDeclContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SimpleLangParser#constdecl}.
+	 * Exit a parse tree produced by the {@code intConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#constdecl}.
 	 * @param ctx the parse tree
 	 */
-	void exitConstdecl(SimpleLangParser.ConstdeclContext ctx);
+	void exitIntConstDecl(SimpleLangParser.IntConstDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code charConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#constdecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterCharConstDecl(SimpleLangParser.CharConstDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code charConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#constdecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitCharConstDecl(SimpleLangParser.CharConstDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code boolConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#constdecl}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolConstDecl(SimpleLangParser.BoolConstDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code boolConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#constdecl}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolConstDecl(SimpleLangParser.BoolConstDeclContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpleLangParser#constvalue}.
 	 * @param ctx the parse tree
@@ -212,6 +238,26 @@ public interface SimpleLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFormalparams(SimpleLangParser.FormalparamsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpleLangParser#classext}.
+	 * @param ctx the parse tree
+	 */
+	void enterClassext(SimpleLangParser.ClassextContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleLangParser#classext}.
+	 * @param ctx the parse tree
+	 */
+	void exitClassext(SimpleLangParser.ClassextContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpleLangParser#interfaceimpl}.
+	 * @param ctx the parse tree
+	 */
+	void enterInterfaceimpl(SimpleLangParser.InterfaceimplContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleLangParser#interfaceimpl}.
+	 * @param ctx the parse tree
+	 */
+	void exitInterfaceimpl(SimpleLangParser.InterfaceimplContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpleLangParser#type}.
 	 * @param ctx the parse tree
@@ -476,6 +522,42 @@ public interface SimpleLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTerm(SimpleLangParser.TermContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ordFunction}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterOrdFunction(SimpleLangParser.OrdFunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ordFunction}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitOrdFunction(SimpleLangParser.OrdFunctionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code chrFunction}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterChrFunction(SimpleLangParser.ChrFunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code chrFunction}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitChrFunction(SimpleLangParser.ChrFunctionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code lenFunction}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterLenFunction(SimpleLangParser.LenFunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code lenFunction}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitLenFunction(SimpleLangParser.LenFunctionContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code designatorFactor}
 	 * labeled alternative in {@link SimpleLangParser#factor}.

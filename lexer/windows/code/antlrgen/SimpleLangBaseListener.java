@@ -1,5 +1,6 @@
-package antlrgen;
 // Generated from .\SimpleLang.g4 by ANTLR 4.9.2
+
+package antlrgen;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -88,13 +89,37 @@ public class SimpleLangBaseListener implements SimpleLangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConstdecl(SimpleLangParser.ConstdeclContext ctx) { }
+	@Override public void enterIntConstDecl(SimpleLangParser.IntConstDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConstdecl(SimpleLangParser.ConstdeclContext ctx) { }
+	@Override public void exitIntConstDecl(SimpleLangParser.IntConstDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCharConstDecl(SimpleLangParser.CharConstDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCharConstDecl(SimpleLangParser.CharConstDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolConstDecl(SimpleLangParser.BoolConstDeclContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolConstDecl(SimpleLangParser.BoolConstDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -239,6 +264,30 @@ public class SimpleLangBaseListener implements SimpleLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFormalparams(SimpleLangParser.FormalparamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClassext(SimpleLangParser.ClassextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClassext(SimpleLangParser.ClassextContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInterfaceimpl(SimpleLangParser.InterfaceimplContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInterfaceimpl(SimpleLangParser.InterfaceimplContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -527,6 +576,42 @@ public class SimpleLangBaseListener implements SimpleLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTerm(SimpleLangParser.TermContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterOrdFunction(SimpleLangParser.OrdFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitOrdFunction(SimpleLangParser.OrdFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterChrFunction(SimpleLangParser.ChrFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitChrFunction(SimpleLangParser.ChrFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLenFunction(SimpleLangParser.LenFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLenFunction(SimpleLangParser.LenFunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

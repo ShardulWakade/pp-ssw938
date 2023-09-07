@@ -1,6 +1,6 @@
+// Generated from .\SimpleLang.g4 by ANTLR 4.9.2
 package antlrgen;
 
-// Generated from .\SimpleLang.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -53,11 +53,26 @@ public interface SimpleLangVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProjectInterfaceDecl(SimpleLangParser.ProjectInterfaceDeclContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link SimpleLangParser#constdecl}.
+	 * Visit a parse tree produced by the {@code intConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#constdecl}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitConstdecl(SimpleLangParser.ConstdeclContext ctx);
+	T visitIntConstDecl(SimpleLangParser.IntConstDeclContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code charConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#constdecl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCharConstDecl(SimpleLangParser.CharConstDeclContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code boolConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#constdecl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolConstDecl(SimpleLangParser.BoolConstDeclContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SimpleLangParser#constvalue}.
 	 * @param ctx the parse tree
@@ -132,6 +147,18 @@ public interface SimpleLangVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFormalparams(SimpleLangParser.FormalparamsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleLangParser#classext}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitClassext(SimpleLangParser.ClassextContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link SimpleLangParser#interfaceimpl}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInterfaceimpl(SimpleLangParser.InterfaceimplContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link SimpleLangParser#type}.
 	 * @param ctx the parse tree
@@ -288,6 +315,27 @@ public interface SimpleLangVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitTerm(SimpleLangParser.TermContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code ordFunction}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOrdFunction(SimpleLangParser.OrdFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code chrFunction}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitChrFunction(SimpleLangParser.ChrFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code lenFunction}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLenFunction(SimpleLangParser.LenFunctionContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code designatorFactor}
 	 * labeled alternative in {@link SimpleLangParser#factor}.

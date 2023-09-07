@@ -9,11 +9,12 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 
 import antlrgen.*;
 import error.*;
+import structure.*;
 import visitors.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        InputStream in = new FileInputStream("./lexer/tests/5.prog");
+        InputStream in = new FileInputStream("./lexer/tests/1.prog");
 
         SimpleLangLexer lexer = new SimpleLangLexer(new ANTLRInputStream(in));
         lexer.removeErrorListeners();
@@ -30,5 +31,10 @@ public class Main {
         if(!checker.visit(tree)){
             System.out.println("ENTRY ERROR");
         }
+
+        Types types = new Types();
+        types.fillFromParseTree(tree);
+
+        System.out.println(types);
     }
 }

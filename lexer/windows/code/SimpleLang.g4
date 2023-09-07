@@ -11,7 +11,10 @@ declarations 	:		constdecl							#projectConstDecl
 				|		interfacedecl						#projectInterfaceDecl
 				;
 				
-constdecl		:		'const'	type ID '=' constvalue (',' ID '=' constvalue)* ';' 	;					
+constdecl		:		'const'	'int' ID '=' NUMCONST (',' ID '=' NUMCONST)* ';' 			#intConstDecl
+				|		'const' 'char' ID '=' CHARCONST (',' ID '=' CHARCONST)* ';'			#charConstDecl
+				|		'const' 'boolean' ID '=' BOOLCONST (',' ID '=' BOOLCONST)* ';'		#boolConstDecl
+				;					
 constvalue		:		val=(NUMCONST | CHARCONST | BOOLCONST)	;		
 
 vardecl			:		type singlevardecl (',' singlevardecl)* ';'	; 
@@ -20,7 +23,7 @@ singlevardecl   :		ID ('[]')? ;
 enumdecl		:		'enum' ID '{' numdecl (',' numdecl)* '}' ;
 numdecl			:		ID ('=' NUMCONST)?	;
 
-classdecl		:		'class' ID ('extends' type)? ('implements' type (',' type)*)? '{' vardecl* ('{' methoddecl* '}')? '}' ;
+classdecl		:		'class' ID classext? interfaceimpl? '{' vardecl* ('{' methoddecl* '}')? '}' ;
 interfacedecl	:		'interface'	ID '{' interfacemethoddecl* '}' ;
 interfacemethoddecl :	returntype ID '(' formalparams? ')' ';' ; 
 
@@ -30,7 +33,9 @@ returntype		:		type 			#nonVoidReturn
 				;
 
 formalparams	:		type singlevardecl (',' type singlevardecl)*	;
-type			:		ID		;
+classext		:		('extends' ID)									;
+interfaceimpl	:		('implements' ID (',' ID)*)						;
+type			:		t=('int' | 'char' | 'boolean' | ID)				;
 
 statement		:		designatorstatement ';'				#statementDesignator
 				|		ifelsestatement						#statementIfElse
@@ -61,7 +66,10 @@ condfact		:		expr (relop expr)?		;
 
 expr			:		'-'? term (addop term)*		;
 term			:		factor (mulop factor)*		;
-factor			:		designator functioncall? 		#designatorFactor
+factor			:		'ord' '(' ID ')'				#ordFunction		
+				|		'chr' '(' expr ')'				#chrFunction
+				|		'len' '(' expr ')'				#lenFunction	
+				|		designator functioncall? 		#designatorFactor
 				| 		constvalue 						#constFactor
 				| 		'new' type ('[' expr ']')? 		#newFactor
 				| 		'(' expr ')'					#parenFactor
