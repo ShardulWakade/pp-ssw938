@@ -4,20 +4,20 @@ grammar SimpleLang;
 
 project			:		'project' ID declarations* '{' methoddecl* '}'	;
 
-declarations 	:		constdecl
-				|		vardecl
-				|		classdecl
-				|		enumdecl
-				|		interfacedecl
+declarations 	:		constdecl							#projectConstDecl
+				|		vardecl								#projectVarDecl
+				|		classdecl							#projectClassDecl
+				|		enumdecl							#projectEnumDecl
+				|		interfacedecl						#projectInterfaceDecl
 				;
 				
 constdecl		:		'const'	type ID '=' constvalue (',' ID '=' constvalue)* ';' 	;					
-constvalue		:		(NUMCONST | CHARCONST | BOOLCONST)	;		
+constvalue		:		val=(NUMCONST | CHARCONST | BOOLCONST)	;		
 
 vardecl			:		type singlevardecl (',' singlevardecl)* ';'	; 
 singlevardecl   :		ID ('[]')? ;
 
-enumdecl		:		'enum' ID '{' numdecl (',' numdecl) '}' ;
+enumdecl		:		'enum' ID '{' numdecl (',' numdecl)* '}' ;
 numdecl			:		ID ('=' NUMCONST)?	;
 
 classdecl		:		'class' ID ('extends' type)? ('implements' type (',' type)*)? '{' vardecl* ('{' methoddecl* '}')? '}' ;
@@ -25,28 +25,35 @@ interfacedecl	:		'interface'	ID '{' interfacemethoddecl* '}' ;
 interfacemethoddecl :	returntype ID '(' formalparams? ')' ';' ; 
 
 methoddecl		:		returntype ID '(' formalparams? ')' vardecl* '{' statement* '}'	;
-returntype		:		(type | 'void') ;
+returntype		:		type 			#nonVoidReturn
+				| 		'void' 			#voidReturn
+				;
 
 formalparams	:		type singlevardecl (',' type singlevardecl)*	;
 type			:		ID		;
 
-statement		:		designatorstatement ';'
-				|		ifelsestatement				// TODO
-				|		forloopstatement			// TODO
-				|		'break' ';'
-				|		'continue' ';'
-				|		'return' expr? ';'
-				|		'read' '(' designator ')' ';'
-				|		'print' '(' actualpars ')' ';'
-				|		'{' statement* '}'
+statement		:		designatorstatement ';'				#statementDesignator
+				|		ifelsestatement						#statementIfElse
+				|		forloopstatement					#statementForLoop
+				|		'break' ';'							#statementBreak
+				|		'continue' ';'						#statementContinue
+				|		'return' expr? ';'					#statementReturn
+				|		'read' '(' designator ')' ';'		#statementRead
+				|		'print' '(' actualpars ')' ';'		#statementPrint
+				|		'{' statement* '}'					#statementBlock
 				;
 				
-designatorstatement : 	designator ('=' expr | functioncall | '++' | '--') ;
+designatorstatement : 	designator assignExpr 				#designatorAssign
+					|	designator functioncall 			#designatorFunctionCall
+					| 	designator unaryop 					#designatorUnaryOp
+					;
+assignExpr		:		'=' expr 			;
+unaryop			:		op=(INCR | DECR) 	;
 functioncall	:		'(' actualpars? ')' ;
 actualpars		:		expr (',' expr)*	;
 
 ifelsestatement :		'if' '(' condition ')' statement ('else' statement)? ;
-forloopstatement :		'for' '(' designatorstatement? ';' condition? ';' designatorstatement ')' statement ;
+forloopstatement :		'for' '(' designatorstatement? ';' condition? ';' designatorstatement? ')' statement ;
 
 condition		:		condterm ('||' condterm)* ;
 condterm		:		condfact ('&&' condfact)* ;
@@ -54,19 +61,47 @@ condfact		:		expr (relop expr)?		;
 
 expr			:		'-'? term (addop term)*		;
 term			:		factor (mulop factor)*		;
-factor			:		designator functioncall? | NUMCONST | CHARCONST | BOOLCONST | 'new' type ('[' expr ']')? | '(' expr ')';
+factor			:		designator functioncall? 		#designatorFactor
+				| 		constvalue 						#constFactor
+				| 		'new' type ('[' expr ']')? 		#newFactor
+				| 		'(' expr ')'					#parenFactor
+				;
+
 designator		:		ID ('.'ID | '['expr']' )*	;
 
-relop			:		'==' | '!=' | '>' | '>=' | '<' | '<=' ;
-addop			:		'+' | '-' ;
-mulop			:		'*' | '/' | '%' ;
+relop			:		op=(RELEQ | RELNE | RELGT | RELGE | RELLT | RELLE);
+addop			:		op=(ADD | SUB);
+mulop			:		op=(MUL | DIV | MOD) ;
 
 // LEXER	(note that constant words marked with 'word' are automatically put in the lexer.)
 
+// unary operators
+INCR 			:		'++'	;
+DECR 			:		'--'	;
+
+// relational operators
+RELEQ			:		'=='	;
+RELNE 			:		'!='	;
+RELGT			:		'>'		;
+RELGE			:		'>='	;
+RELLT			:		'<'		;
+RELLE			:		'<='	;
+
+// addition/subtraction
+ADD				:		'+'		;
+SUB 			:		'-'		;
+
+// mul/div/mod
+MUL 			:		'*'		;
+DIV				:		'/'		;
+MOD 			:		'%'		;
+
+// Consts
 NUMCONST		:		DIGIT+ ;
 CHARCONST		:		'\'' . '\'' ;
 BOOLCONST		:		('true' | 'false') ;
 
+// Generic
 ID				:		LETTER (LETTER | DIGIT | '_')* ;
 SLCOMMENT		:		'//' .*? '\r'? '\n' -> skip ;
 WS 				: 		[ \t\r\n]+ -> skip ; // skip spaces, tabs, newline

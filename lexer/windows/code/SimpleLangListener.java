@@ -17,15 +17,65 @@ public interface SimpleLangListener extends ParseTreeListener {
 	 */
 	void exitProject(SimpleLangParser.ProjectContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SimpleLangParser#declarations}.
+	 * Enter a parse tree produced by the {@code projectConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
 	 * @param ctx the parse tree
 	 */
-	void enterDeclarations(SimpleLangParser.DeclarationsContext ctx);
+	void enterProjectConstDecl(SimpleLangParser.ProjectConstDeclContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SimpleLangParser#declarations}.
+	 * Exit a parse tree produced by the {@code projectConstDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
 	 * @param ctx the parse tree
 	 */
-	void exitDeclarations(SimpleLangParser.DeclarationsContext ctx);
+	void exitProjectConstDecl(SimpleLangParser.ProjectConstDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code projectVarDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
+	 * @param ctx the parse tree
+	 */
+	void enterProjectVarDecl(SimpleLangParser.ProjectVarDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code projectVarDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
+	 * @param ctx the parse tree
+	 */
+	void exitProjectVarDecl(SimpleLangParser.ProjectVarDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code projectClassDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
+	 * @param ctx the parse tree
+	 */
+	void enterProjectClassDecl(SimpleLangParser.ProjectClassDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code projectClassDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
+	 * @param ctx the parse tree
+	 */
+	void exitProjectClassDecl(SimpleLangParser.ProjectClassDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code projectEnumDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
+	 * @param ctx the parse tree
+	 */
+	void enterProjectEnumDecl(SimpleLangParser.ProjectEnumDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code projectEnumDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
+	 * @param ctx the parse tree
+	 */
+	void exitProjectEnumDecl(SimpleLangParser.ProjectEnumDeclContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code projectInterfaceDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
+	 * @param ctx the parse tree
+	 */
+	void enterProjectInterfaceDecl(SimpleLangParser.ProjectInterfaceDeclContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code projectInterfaceDecl}
+	 * labeled alternative in {@link SimpleLangParser#declarations}.
+	 * @param ctx the parse tree
+	 */
+	void exitProjectInterfaceDecl(SimpleLangParser.ProjectInterfaceDeclContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpleLangParser#constdecl}.
 	 * @param ctx the parse tree
@@ -127,15 +177,29 @@ public interface SimpleLangListener extends ParseTreeListener {
 	 */
 	void exitMethoddecl(SimpleLangParser.MethoddeclContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SimpleLangParser#returntype}.
+	 * Enter a parse tree produced by the {@code nonVoidReturn}
+	 * labeled alternative in {@link SimpleLangParser#returntype}.
 	 * @param ctx the parse tree
 	 */
-	void enterReturntype(SimpleLangParser.ReturntypeContext ctx);
+	void enterNonVoidReturn(SimpleLangParser.NonVoidReturnContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SimpleLangParser#returntype}.
+	 * Exit a parse tree produced by the {@code nonVoidReturn}
+	 * labeled alternative in {@link SimpleLangParser#returntype}.
 	 * @param ctx the parse tree
 	 */
-	void exitReturntype(SimpleLangParser.ReturntypeContext ctx);
+	void exitNonVoidReturn(SimpleLangParser.NonVoidReturnContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code voidReturn}
+	 * labeled alternative in {@link SimpleLangParser#returntype}.
+	 * @param ctx the parse tree
+	 */
+	void enterVoidReturn(SimpleLangParser.VoidReturnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code voidReturn}
+	 * labeled alternative in {@link SimpleLangParser#returntype}.
+	 * @param ctx the parse tree
+	 */
+	void exitVoidReturn(SimpleLangParser.VoidReturnContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpleLangParser#formalparams}.
 	 * @param ctx the parse tree
@@ -157,25 +221,169 @@ public interface SimpleLangListener extends ParseTreeListener {
 	 */
 	void exitType(SimpleLangParser.TypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SimpleLangParser#statement}.
+	 * Enter a parse tree produced by the {@code statementDesignator}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterStatement(SimpleLangParser.StatementContext ctx);
+	void enterStatementDesignator(SimpleLangParser.StatementDesignatorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SimpleLangParser#statement}.
+	 * Exit a parse tree produced by the {@code statementDesignator}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitStatement(SimpleLangParser.StatementContext ctx);
+	void exitStatementDesignator(SimpleLangParser.StatementDesignatorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SimpleLangParser#designatorstatement}.
+	 * Enter a parse tree produced by the {@code statementIfElse}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterDesignatorstatement(SimpleLangParser.DesignatorstatementContext ctx);
+	void enterStatementIfElse(SimpleLangParser.StatementIfElseContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SimpleLangParser#designatorstatement}.
+	 * Exit a parse tree produced by the {@code statementIfElse}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitDesignatorstatement(SimpleLangParser.DesignatorstatementContext ctx);
+	void exitStatementIfElse(SimpleLangParser.StatementIfElseContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code statementForLoop}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatementForLoop(SimpleLangParser.StatementForLoopContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code statementForLoop}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatementForLoop(SimpleLangParser.StatementForLoopContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code statementBreak}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatementBreak(SimpleLangParser.StatementBreakContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code statementBreak}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatementBreak(SimpleLangParser.StatementBreakContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code statementContinue}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatementContinue(SimpleLangParser.StatementContinueContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code statementContinue}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatementContinue(SimpleLangParser.StatementContinueContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code statementReturn}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatementReturn(SimpleLangParser.StatementReturnContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code statementReturn}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatementReturn(SimpleLangParser.StatementReturnContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code statementRead}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatementRead(SimpleLangParser.StatementReadContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code statementRead}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatementRead(SimpleLangParser.StatementReadContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code statementPrint}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatementPrint(SimpleLangParser.StatementPrintContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code statementPrint}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatementPrint(SimpleLangParser.StatementPrintContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code statementBlock}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterStatementBlock(SimpleLangParser.StatementBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code statementBlock}
+	 * labeled alternative in {@link SimpleLangParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitStatementBlock(SimpleLangParser.StatementBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code designatorAssign}
+	 * labeled alternative in {@link SimpleLangParser#designatorstatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterDesignatorAssign(SimpleLangParser.DesignatorAssignContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code designatorAssign}
+	 * labeled alternative in {@link SimpleLangParser#designatorstatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitDesignatorAssign(SimpleLangParser.DesignatorAssignContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code designatorFunctionCall}
+	 * labeled alternative in {@link SimpleLangParser#designatorstatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterDesignatorFunctionCall(SimpleLangParser.DesignatorFunctionCallContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code designatorFunctionCall}
+	 * labeled alternative in {@link SimpleLangParser#designatorstatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitDesignatorFunctionCall(SimpleLangParser.DesignatorFunctionCallContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code designatorUnaryOp}
+	 * labeled alternative in {@link SimpleLangParser#designatorstatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterDesignatorUnaryOp(SimpleLangParser.DesignatorUnaryOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code designatorUnaryOp}
+	 * labeled alternative in {@link SimpleLangParser#designatorstatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitDesignatorUnaryOp(SimpleLangParser.DesignatorUnaryOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpleLangParser#assignExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignExpr(SimpleLangParser.AssignExprContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleLangParser#assignExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignExpr(SimpleLangParser.AssignExprContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link SimpleLangParser#unaryop}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryop(SimpleLangParser.UnaryopContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link SimpleLangParser#unaryop}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryop(SimpleLangParser.UnaryopContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpleLangParser#functioncall}.
 	 * @param ctx the parse tree
@@ -267,15 +475,53 @@ public interface SimpleLangListener extends ParseTreeListener {
 	 */
 	void exitTerm(SimpleLangParser.TermContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link SimpleLangParser#factor}.
+	 * Enter a parse tree produced by the {@code designatorFactor}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void enterFactor(SimpleLangParser.FactorContext ctx);
+	void enterDesignatorFactor(SimpleLangParser.DesignatorFactorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link SimpleLangParser#factor}.
+	 * Exit a parse tree produced by the {@code designatorFactor}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
 	 * @param ctx the parse tree
 	 */
-	void exitFactor(SimpleLangParser.FactorContext ctx);
+	void exitDesignatorFactor(SimpleLangParser.DesignatorFactorContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code constFactor}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterConstFactor(SimpleLangParser.ConstFactorContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code constFactor}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitConstFactor(SimpleLangParser.ConstFactorContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code newFactor}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterNewFactor(SimpleLangParser.NewFactorContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code newFactor}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitNewFactor(SimpleLangParser.NewFactorContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code parenFactor}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void enterParenFactor(SimpleLangParser.ParenFactorContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code parenFactor}
+	 * labeled alternative in {@link SimpleLangParser#factor}.
+	 * @param ctx the parse tree
+	 */
+	void exitParenFactor(SimpleLangParser.ParenFactorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link SimpleLangParser#designator}.
 	 * @param ctx the parse tree
