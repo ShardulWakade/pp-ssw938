@@ -31,7 +31,7 @@ public class ClassTypeVisitor extends SimpleLangBaseVisitor<Void>{
             if(extension != null){
                 String parent = extension.ID().getText();
                 if(!types.hasClass(parent)){
-                    System.out.println("ERROR: No class " + parent + " for class " + id + " to extend from.");
+                    System.out.println("TYPE ERROR: No class " + parent + " for class " + id + " to extend from.");
                 }
             }
 
@@ -40,7 +40,7 @@ public class ClassTypeVisitor extends SimpleLangBaseVisitor<Void>{
             if(IDS != null){
                 for(TerminalNode ID : IDS){
                     if(!types.hasInterface(ID.getText())){
-                        System.out.println("ERROR: class " + id + " is trying to implement a non-existing interface (" + ID + ")");
+                        System.out.println("TYPE ERROR: class " + id + " is trying to implement a non-existing interface (" + ID + ")");
                     }
                 }
             }

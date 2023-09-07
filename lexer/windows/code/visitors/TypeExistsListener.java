@@ -24,7 +24,7 @@ public class TypeExistsListener extends SimpleLangBaseListener {
     public void enterVardecl(VardeclContext ctx) {
         String typeStr = ctx.type().getText();
         if(!types.hasType(typeStr)){
-            System.out.println("ERROR : Type " + typeStr + " does not exist");
+            System.out.println("TYPE ERROR : Type " + typeStr + " does not exist");
         }
     }
 
@@ -32,7 +32,7 @@ public class TypeExistsListener extends SimpleLangBaseListener {
     public void enterNonVoidReturn(NonVoidReturnContext ctx) {
         String typeStr = ctx.type().getText();
         if(!types.hasType(typeStr)){
-            System.out.println("ERROR : Type " + typeStr + " does not exist");
+            System.out.println("TYPE ERROR : Type " + typeStr + " does not exist");
         }
     }
 
@@ -43,7 +43,7 @@ public class TypeExistsListener extends SimpleLangBaseListener {
             for(TypeContext ty : typeContexts){
                 String typeStr = ty.getText();
                 if(!types.hasType(typeStr)){
-                    System.out.println("ERROR : Type " + typeStr + " does not exist");
+                    System.out.println("TYPE ERROR : Type " + typeStr + " does not exist");
                 }
             }
         }

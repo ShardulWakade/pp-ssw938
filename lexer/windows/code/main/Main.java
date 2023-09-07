@@ -2,6 +2,7 @@ package main;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.HashSet;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -41,5 +42,11 @@ public class Main {
         TypeExistsListener typecheck = new TypeExistsListener(types);
         ParseTreeWalker walker = new ParseTreeWalker();
         walker.walk(typecheck, tree);
+
+        VarNameClashListener nameclashcheck = new VarNameClashListener(types);
+        ParseTreeWalker walker2 = new ParseTreeWalker();
+        walker2.walk(nameclashcheck, tree);
+        HashSet<String> globalVarNames = nameclashcheck.retrieveGlobalVarNames();
+        System.out.println("Globals : " + globalVarNames);
     }
 }

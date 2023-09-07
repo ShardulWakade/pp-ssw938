@@ -1,6 +1,6 @@
 project P
     const int size = 10;
-    enum Num { ZERO, ONE, TEN = 10 }
+    enum Num { ZERO, ONE, TEN = 10}
     interface I {
         int getp(int i);
         int getn(int i);
