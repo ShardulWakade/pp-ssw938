@@ -5,6 +5,7 @@ import java.io.InputStream;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.ANTLRInputStream;
 
 import antlrgen.*;
@@ -36,5 +37,9 @@ public class Main {
         types.fillFromParseTree(tree);
 
         System.out.println(types);
+
+        TypeExistsListener typecheck = new TypeExistsListener(types);
+        ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(typecheck, tree);
     }
 }
