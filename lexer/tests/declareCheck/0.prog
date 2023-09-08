@@ -1,0 +1,37 @@
+// This is a basic test for function vs variables
+// all de variables should be marked as error since they dont existing
+// program should be able to discriminate between variable and function (func)
+
+project proj
+
+int exists1;
+char exists2;
+
+class A{}
+
+A exists3;
+
+{
+    void func(){}
+
+    void entry()
+    A exists4, exists5;
+    {
+        exists1 = de.a.a;
+        de2 = exists2;
+
+        de3();
+        exists1();
+
+        func();
+        func = 10;
+
+        exists2 = 10;
+
+        exists3.call.call(1, 2, de4, 4, 5);
+
+        de7.call.call(1, 2, exists1, 3);
+    }
+
+}
+

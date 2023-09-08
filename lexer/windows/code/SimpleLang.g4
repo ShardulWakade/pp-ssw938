@@ -66,7 +66,7 @@ condfact		:		expr (relop expr)?		;
 
 expr			:		'-'? term (addop term)*		;
 term			:		factor (mulop factor)*		;
-factor			:		'ord' '(' ID ')'				#ordFunction		
+factor			:		'ord' '(' designator ')'		#ordFunction		
 				|		'chr' '(' expr ')'				#chrFunction
 				|		'len' '(' expr ')'				#lenFunction	
 				|		designator functioncall? 		#designatorFactor

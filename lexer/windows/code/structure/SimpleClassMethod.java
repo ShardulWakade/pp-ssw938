@@ -14,6 +14,53 @@ import visitors.GlobalsListener;
 public class SimpleClassMethod extends SimpleInterfaceMethod {
     private ArrayList<String> localVarNames;
     
+    public static SimpleClassMethod createFromContextNoErrors(String enclosingScope, MethoddeclContext context, Types types){
+        String returnType = context.returntype().getText();
+        String methodName = context.ID().getText();
+
+        ArrayList<String> localVarNames = new ArrayList<>();
+        ArrayList<String> argTypes = new ArrayList<>();
+
+        FormalparamsContext formalParams = context.formalparams();
+        if(formalParams != null){
+            List<TypeContext> typeContext = formalParams.type();
+            List<SinglevardeclContext> varName = formalParams.singlevardecl();
+
+            for(int i = 0; i < typeContext.size(); i++){
+                String currentType = typeContext.get(i).getText();
+                String currentId = varName.get(i).ID().getText();
+
+                if(varName.get(i).getText().trim().endsWith("]")){
+                    currentType += "[]";
+                }
+                argTypes.add(currentType);        
+                if(!types.hasType(currentId) && !localVarNames.contains(currentId)){
+                    localVarNames.add(currentId);
+                }
+            }
+        }
+
+        // Local variables
+
+        List<VardeclContext> localVars = context.vardecl();
+        if(localVars != null){
+            for(VardeclContext localVarLine : localVars){
+                List<SinglevardeclContext> singles = localVarLine.singlevardecl();
+                if(singles != null){
+                    for(SinglevardeclContext single : singles){
+                        String idString = single.ID().getText();
+                        if(!types.hasType(idString) && !localVarNames.contains(idString)){
+                            localVarNames.add(idString);
+                        }
+                    }
+                }
+            }
+        }
+
+        SimpleClassMethod classMethod = new SimpleClassMethod(enclosingScope, returnType, methodName, argTypes, localVarNames);
+        return classMethod;
+    }
+
     public static SimpleClassMethod createFromContext(String enclosingScope, MethoddeclContext context, Types types){
         String returnType = context.returntype().getText();
         String methodName = context.ID().getText();

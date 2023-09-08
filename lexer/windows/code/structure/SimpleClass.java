@@ -36,6 +36,15 @@ public class SimpleClass implements Named {
         return methods.contains(method);
     }
 
+    public boolean hasMethodName(String name){
+        for(SimpleClassMethod method : methods){
+            if(method.getMethodName().equals(name)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Does not search interfaces as interfaces do not contain implementation. So cant use that function anyways.
     public boolean hasMethodDeep(SimpleInterfaceMethod method){
         if(hasMethod(method)){
@@ -43,6 +52,14 @@ public class SimpleClass implements Named {
         }
 
         return parent != null && parent.hasMethodDeep(method);
+    }
+
+    public boolean hasMethodDeepName(String name){
+        if(hasMethodName(name)){
+            return true;
+        }
+
+        return parent != null && parent.hasMethodDeepName(name);
     }
 
     public String getName() {

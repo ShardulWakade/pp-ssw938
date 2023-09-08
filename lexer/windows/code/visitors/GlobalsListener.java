@@ -22,6 +22,7 @@ import antlrgen.SimpleLangParser.NumdeclContext;
 import antlrgen.SimpleLangParser.ProjectContext;
 import antlrgen.SimpleLangParser.ProjectVarDeclContext;
 import antlrgen.SimpleLangParser.SinglevardeclContext;
+import antlrgen.SimpleLangParser.StatementContext;
 import antlrgen.SimpleLangParser.VardeclContext;
 import structure.ScopeTree;
 import structure.SimpleClass;
@@ -34,7 +35,7 @@ import structure.Types;
 // Will visit all global variables in our program and add them to ScopeTree
 // Will also create enums in the scope tree.
 public class GlobalsListener extends SimpleLangBaseListener {
-    
+
     public static boolean isUniqueName(String idStr, Types types, Collection<String> c){
         if(types.hasType(idStr)){
             System.out.println("NAME ERROR : " + idStr + " is already a type.");

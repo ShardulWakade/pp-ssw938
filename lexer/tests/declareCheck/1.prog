@@ -1,0 +1,41 @@
+// Tests with inheritance
+
+project proj 
+
+    class A{}
+
+    class Top 
+    {
+        Child child;
+        Top top;
+        
+        {
+             A topFunc() 
+             A error, b;
+             int c, d;
+             {
+                doesntExist = 10;
+             }   
+        }
+    }
+
+    interface middle {
+        void mid(Child child, Top top);
+    }
+
+    class Child extends Top implements middle {
+        Top parent;
+
+        {
+            // void mid(){}
+
+            void function()
+            {
+                mid();  // shouldn't work as implementation is needed. Will work if Child implements mid();
+                child = child + top;    // should work from inheritance
+                topFunc(1, 2, 3);       // should work from inheritance
+                error = 10;                 // Shouldnt work as a is local in parent.
+            }
+        }
+    }
+{}
