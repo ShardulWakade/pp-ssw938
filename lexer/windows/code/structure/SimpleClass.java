@@ -6,13 +6,13 @@ public class SimpleClass implements Named {
     private SimpleClass parent;
     private String className;
     private ArrayList<String> varNames;
-    private ArrayList<SimpleMethod> methods;
+    private ArrayList<SimpleClassMethod> methods;
 
-    public SimpleClass(String className, ArrayList<String> varNames, ArrayList<SimpleMethod> methods){
+    public SimpleClass(String className, ArrayList<String> varNames, ArrayList<SimpleClassMethod> methods){
         this(null, className, varNames, methods);
     }
 
-    public SimpleClass(SimpleClass parent, String className, ArrayList<String> varNames, ArrayList<SimpleMethod> methods) {
+    public SimpleClass(SimpleClass parent, String className, ArrayList<String> varNames, ArrayList<SimpleClassMethod> methods) {
         this.parent = parent;
         this.className = className;
         this.varNames = varNames;
@@ -32,12 +32,12 @@ public class SimpleClass implements Named {
         return parent != null && parent.hasVarNameDeep(name);
     }
 
-    public boolean hasMethod(SimpleMethod method){
+    public boolean hasMethod(SimpleInterfaceMethod method){
         return methods.contains(method);
     }
 
     // Does not search interfaces as interfaces do not contain implementation. So cant use that function anyways.
-    public boolean hasMethodDeep(SimpleMethod method){
+    public boolean hasMethodDeep(SimpleInterfaceMethod method){
         if(hasMethod(method)){
             return true;
         }
@@ -49,7 +49,7 @@ public class SimpleClass implements Named {
         return className;
     }
 
-    public ArrayList<SimpleMethod> getMethods() {
+    public ArrayList<SimpleClassMethod> getMethods() {
         return methods;
     }
     
@@ -85,5 +85,12 @@ public class SimpleClass implements Named {
         } else if (!className.equals(other.className))
             return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        String parentName = parent == null ? "None" : parent.getName();
+        return "SimpleClass [parent=" + parentName + ", className=" + className + "\n\t, varNames=" + varNames + "\n\t, methods="
+                + methods + "\n\t]";
     }
 }

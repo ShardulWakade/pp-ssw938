@@ -3,17 +3,25 @@ package structure;
 import java.util.ArrayList;
 
 public class ScopeTree {
-    public ArrayList<SimpleMethod> globalMethods = new ArrayList<>();
+    public ArrayList<SimpleClassMethod> globalMethods = new ArrayList<>();
     public ArrayList<String> globalVarNames = new ArrayList<>();
     public ArrayList<SimpleClass> classes = new ArrayList<>();
     public ArrayList<SimpleEnum> enums = new ArrayList<>();
     public ArrayList<SimpleInterface> interfaces = new ArrayList<>();
 
-    public boolean addGlobalMethod(SimpleMethod method){
+    public ArrayList<SimpleClassMethod> getGlobalMethods() {
+        return globalMethods;
+    }
+
+    public ArrayList<String> getGlobalVarNames() {
+        return globalVarNames;
+    }
+
+    public boolean addGlobalMethod(SimpleClassMethod method){
         return globalMethods.add(method);
     }
 
-    public boolean hasGlobalMethod(SimpleMethod method){
+    public boolean hasGlobalMethod(SimpleClassMethod method){
         return globalMethods.contains(method);
     }
 
@@ -62,11 +70,11 @@ public class ScopeTree {
         return getFromName(name, classes);
     }
 
-    public SimpleEnum getFromEnum(String name){
+    public SimpleEnum getEnumFromName(String name){
         return getFromName(name, enums);
     }
 
-    public SimpleInterface getFromInterface(String name){
+    public SimpleInterface getInterfaceFromName(String name){
         return getFromName(name, interfaces);
     }
 
@@ -75,11 +83,21 @@ public class ScopeTree {
     }
 
     public boolean hasEnum(String name){
-        return getFromEnum(name) != null;
+        return getEnumFromName(name) != null;
     }
 
     public boolean hasInterface(String name){
-        return getFromInterface(name) != null;
+        return getInterfaceFromName(name) != null;
+    }
+
+    public boolean hasType(String name){
+        return hasClass(name) || hasEnum(name) || hasInterface(name);
+    }
+
+    @Override
+    public String toString() {
+        return "ScopeTree [\nglobalMethods=" + globalMethods + "\n\n\nglobalVarNames=" + globalVarNames + "\n\n\nclasses="
+                + classes + "\n\n\nenums=" + enums + "\n\n\ninterfaces=" + interfaces + "\n]";
     }
 
 }

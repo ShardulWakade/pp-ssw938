@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class SimpleInterface implements Named {
     private String interfaceName;
-    private ArrayList<SimpleMethod> methods;
+    private ArrayList<SimpleInterfaceMethod> methods;
 
-    public SimpleInterface(String interfaceName, ArrayList<SimpleMethod> methods) {
+    public SimpleInterface(String interfaceName, ArrayList<SimpleInterfaceMethod> methods) {
         this.interfaceName = interfaceName;
         this.methods = methods;
     }
@@ -40,11 +40,16 @@ public class SimpleInterface implements Named {
         return interfaceName;
     }
 
-    public ArrayList<SimpleMethod> getMethods() {
+    public ArrayList<SimpleInterfaceMethod> getMethods() {
         return methods;
     }
 
-    public boolean hasMethod(SimpleMethod method){
+    public boolean hasMethod(SimpleInterfaceMethod method){
         return methods.contains(method);
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleInterface [interfaceName=" + interfaceName + "\n\t\tmethods=" + methods + "]";
     }
 }

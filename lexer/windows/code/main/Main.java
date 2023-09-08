@@ -16,7 +16,7 @@ import visitors.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        InputStream in = new FileInputStream("./lexer/tests/1.prog");
+        InputStream in = new FileInputStream("./lexer/tests/15.prog");
 
         SimpleLangLexer lexer = new SimpleLangLexer(new ANTLRInputStream(in));
         lexer.removeErrorListeners();
@@ -29,24 +29,13 @@ public class Main {
         parser.addErrorListener(ParserErrorListener.INSTANCE);
 
         ParseTree tree = parser.project();
-        EntryChecker checker = new EntryChecker();
-        if(!checker.visit(tree)){
-            System.out.println("ENTRY ERROR");
-        }
-
+        
         Types types = new Types();
         types.fillFromParseTree(tree);
 
-        System.out.println(types);
+        ScopeTreeBuilder builder = new ScopeTreeBuilder(tree, types);
+        ScopeTree scopeTree = builder.build();
 
-        TypeExistsListener typecheck = new TypeExistsListener(types);
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(typecheck, tree);
-
-        VarNameClashListener nameclashcheck = new VarNameClashListener(types);
-        ParseTreeWalker walker2 = new ParseTreeWalker();
-        walker2.walk(nameclashcheck, tree);
-        HashSet<String> globalVarNames = nameclashcheck.retrieveGlobalVarNames();
-        System.out.println("Globals : " + globalVarNames);
+        System.out.println(scopeTree);
     }
 }

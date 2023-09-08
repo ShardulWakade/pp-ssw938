@@ -1,0 +1,48 @@
+project proj
+    A j, b, c;
+    class A {
+        int a, b;
+        A c;
+        B d;
+        C e;
+
+        {
+            int func(int a, int b)
+            A a, a2;
+            B b1, b2;
+            {
+                // eh
+            }
+
+            void f2(B b1, B b2)
+            int a, b;
+            A a1, a2;
+            {
+                // nope
+            }
+
+            void f2(B b3) int a; {}
+
+            // error!
+            void f3(int c) int a; int b; {}
+            int f3(int d) int a; int b; {}
+        }
+    }
+
+    interface B{}
+    class C extends A implements B {}
+{
+    int method(int p, int q)
+    int a, b, c;
+    {
+
+    }
+
+    int err(int k){}
+
+    int err(int p){}
+
+    int err2(A a, B b){}
+
+    int err2(A a1, B b2){}
+}

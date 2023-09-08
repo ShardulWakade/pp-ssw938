@@ -48,4 +48,9 @@ public class SimpleEnum implements Named{
     public boolean hasVarName(String name){
         return varNames.contains(name);
     }
+
+    @Override
+    public String toString() {
+        return "SimpleEnum [enumName=" + enumName + ", varNames=" + varNames + "]";
+    }
 }

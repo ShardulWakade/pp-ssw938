@@ -1,0 +1,25 @@
+project TestNewFeatures
+    const int a = 10;
+    class A1 extends A {}
+    interface A {}
+    class B extends A1 implements A {}
+    class E extends D {}
+    enum C { id }
+    A obj1;
+    A obj2;
+    B obj3;
+    Z obj4;
+
+    class K {
+
+    {
+        int number(K k, X x)
+        P p;
+        char ch;
+        boolan bool;
+        {}
+    }
+    }
+{
+
+}
