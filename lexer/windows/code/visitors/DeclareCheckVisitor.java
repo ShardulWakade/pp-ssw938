@@ -34,6 +34,7 @@ public class DeclareCheckVisitor extends SimpleLangBaseVisitor<Void> {
     @Override
     public Void visitClassdecl(ClassdeclContext ctx) {
         currentClass = scopeTree.getClassFromName(ctx.ID().getText());
+        currentClass.getVarNames().add("this");
         visitChildren(ctx);
         currentClass = null;
     
@@ -43,7 +44,7 @@ public class DeclareCheckVisitor extends SimpleLangBaseVisitor<Void> {
     @Override
     public Void visitMethoddecl(MethoddeclContext ctx) {
         
-        currentLocals = SimpleClassMethod.createFromContext("", ctx, types);
+        currentLocals = SimpleClassMethod.createFromContextNoErrors("", ctx, types);
         visitChildren(ctx);
         currentLocals = null;
 
@@ -101,7 +102,14 @@ public class DeclareCheckVisitor extends SimpleLangBaseVisitor<Void> {
     // This will simply check if the first ID in the designator has been declared before
     @Override
     public Void visitDesignator(DesignatorContext ctx) {
-        confirmVariableExists(ctx.ID(0).getText()); // Only worry about the first one. Rest is too complex without proper type system.
+        if(isTooComplex(ctx)){
+            if(!types.hasType(ctx.ID(0).getText())){
+                confirmVariableExists(ctx.ID(0).getText()); // Only worry about the first one. Rest is too complex without proper type system.
+            }
+        } else {
+            confirmVariableExists(ctx.ID(0).getText());
+        }
+
         visitExpressionList(ctx.expr());
         return null;
     }
@@ -121,7 +129,7 @@ public class DeclareCheckVisitor extends SimpleLangBaseVisitor<Void> {
             }
         }
 
-        System.out.println("ERROR : No function call found for " + methodName);
+        System.out.println("NAME USE ERROR : No function call found for " + methodName);
     }
 
     private static boolean isTooComplex(DesignatorContext context){
@@ -129,6 +137,9 @@ public class DeclareCheckVisitor extends SimpleLangBaseVisitor<Void> {
     }
     
     private void confirmVariableExists(String id){
+        if(types.hasType(id)){
+            return;
+        }
         if(currentLocals.getLocalVarNames().contains(id)){
             return;
         }
@@ -142,7 +153,7 @@ public class DeclareCheckVisitor extends SimpleLangBaseVisitor<Void> {
         }
 
         // Otherwise error: 
-        System.out.println("Variable not previously declared : " + id);
+        System.out.println("VAR ERROR : Variable not previously declared : " + id);
     }
 
 }

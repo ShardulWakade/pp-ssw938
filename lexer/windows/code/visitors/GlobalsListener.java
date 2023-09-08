@@ -38,11 +38,11 @@ public class GlobalsListener extends SimpleLangBaseListener {
 
     public static boolean isUniqueName(String idStr, Types types, Collection<String> c){
         if(types.hasType(idStr)){
-            System.out.println("NAME ERROR : " + idStr + " is already a type.");
+            System.out.println("NAME USE ERROR : " + idStr + " is already a type.");
             return false;
         } 
         else if(c.contains(idStr)){
-            System.out.println("NAME ERROR : " + idStr + " is already a variable.");
+            System.out.println("NAME USE ERROR : " + idStr + " is already a variable.");
             return false;
         }
         return true;
@@ -214,11 +214,11 @@ public class GlobalsListener extends SimpleLangBaseListener {
                 List<SinglevardeclContext> individualNames = lineDecl.singlevardecl();
                 if(individualNames != null){
                     for(SinglevardeclContext id : individualNames){
-                        if(isUniqueName(id.getText(), types, classVarNames)){
-                            classVarNames.add(id.getText());
+                        if(isUniqueName(id.ID().getText(), types, classVarNames)){
+                            classVarNames.add(id.ID().getText());
                         }
                         else {
-                            System.out.println("NAME ERROR : " + className + "." + id.getText() + " already exists!");
+                            System.out.println("NAME ERROR : " + className + "." + id.ID().getText() + " already exists!");
                         }
                     }
                 }

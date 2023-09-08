@@ -1,4 +1,5 @@
 // Generated from .\SimpleLang.g4 by ANTLR 4.9.2
+
 package antlrgen;
 
 import org.antlr.v4.runtime.atn.*;
@@ -2884,7 +2885,9 @@ public class SimpleLangParser extends Parser {
 		}
 	}
 	public static class OrdFunctionContext extends FactorContext {
-		public TerminalNode ID() { return getToken(SimpleLangParser.ID, 0); }
+		public DesignatorContext designator() {
+			return getRuleContext(DesignatorContext.class,0);
+		}
 		public OrdFunctionContext(FactorContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -2944,7 +2947,7 @@ public class SimpleLangParser extends Parser {
 		enterRule(_localctx, 60, RULE_factor);
 		int _la;
 		try {
-			setState(439);
+			setState(440);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case T__29:
@@ -2956,7 +2959,7 @@ public class SimpleLangParser extends Parser {
 				setState(409);
 				match(T__14);
 				setState(410);
-				match(ID);
+				designator();
 				setState(411);
 				match(T__15);
 				}
@@ -2965,13 +2968,13 @@ public class SimpleLangParser extends Parser {
 				_localctx = new ChrFunctionContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(412);
-				match(T__30);
 				setState(413);
-				match(T__14);
+				match(T__30);
 				setState(414);
-				expr();
+				match(T__14);
 				setState(415);
+				expr();
+				setState(416);
 				match(T__15);
 				}
 				break;
@@ -2979,13 +2982,13 @@ public class SimpleLangParser extends Parser {
 				_localctx = new LenFunctionContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(417);
-				match(T__31);
 				setState(418);
-				match(T__14);
+				match(T__31);
 				setState(419);
-				expr();
+				match(T__14);
 				setState(420);
+				expr();
+				setState(421);
 				match(T__15);
 				}
 				break;
@@ -2993,14 +2996,14 @@ public class SimpleLangParser extends Parser {
 				_localctx = new DesignatorFactorContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(422);
+				setState(423);
 				designator();
-				setState(424);
+				setState(425);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__14) {
 					{
-					setState(423);
+					setState(424);
 					functioncall();
 					}
 				}
@@ -3013,7 +3016,7 @@ public class SimpleLangParser extends Parser {
 				_localctx = new ConstFactorContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(426);
+				setState(427);
 				constvalue();
 				}
 				break;
@@ -3021,20 +3024,20 @@ public class SimpleLangParser extends Parser {
 				_localctx = new NewFactorContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(427);
-				match(T__32);
 				setState(428);
+				match(T__32);
+				setState(429);
 				type();
-				setState(433);
+				setState(434);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==T__33) {
 					{
-					setState(429);
-					match(T__33);
 					setState(430);
-					expr();
+					match(T__33);
 					setState(431);
+					expr();
+					setState(432);
 					match(T__34);
 					}
 				}
@@ -3045,11 +3048,11 @@ public class SimpleLangParser extends Parser {
 				_localctx = new ParenFactorContext(_localctx);
 				enterOuterAlt(_localctx, 7);
 				{
-				setState(435);
-				match(T__14);
 				setState(436);
-				expr();
+				match(T__14);
 				setState(437);
+				expr();
+				setState(438);
 				match(T__15);
 				}
 				break;
@@ -3105,31 +3108,31 @@ public class SimpleLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(441);
+			setState(442);
 			match(ID);
-			setState(450);
+			setState(451);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__33 || _la==T__35) {
 				{
-				setState(448);
+				setState(449);
 				_errHandler.sync(this);
 				switch (_input.LA(1)) {
 				case T__35:
 					{
-					setState(442);
-					match(T__35);
 					setState(443);
+					match(T__35);
+					setState(444);
 					match(ID);
 					}
 					break;
 				case T__33:
 					{
-					setState(444);
-					match(T__33);
 					setState(445);
-					expr();
+					match(T__33);
 					setState(446);
+					expr();
+					setState(447);
 					match(T__34);
 					}
 					break;
@@ -3137,7 +3140,7 @@ public class SimpleLangParser extends Parser {
 					throw new NoViableAltException(this);
 				}
 				}
-				setState(452);
+				setState(453);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -3188,7 +3191,7 @@ public class SimpleLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(453);
+			setState(454);
 			((RelopContext)_localctx).op = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << RELEQ) | (1L << RELNE) | (1L << RELGT) | (1L << RELGE) | (1L << RELLT) | (1L << RELLE))) != 0)) ) {
@@ -3242,7 +3245,7 @@ public class SimpleLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(455);
+			setState(456);
 			((AddopContext)_localctx).op = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !(_la==ADD || _la==SUB) ) {
@@ -3297,7 +3300,7 @@ public class SimpleLangParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(457);
+			setState(458);
 			((MulopContext)_localctx).op = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MUL) | (1L << DIV) | (1L << MOD))) != 0)) ) {
@@ -3322,7 +3325,7 @@ public class SimpleLangParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\39\u01ce\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\39\u01cf\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -3354,19 +3357,19 @@ public class SimpleLangParser extends Parser {
 		"\34\3\34\7\34\u017b\n\34\f\34\16\34\u017e\13\34\3\35\3\35\3\35\3\35\5"+
 		"\35\u0184\n\35\3\36\5\36\u0187\n\36\3\36\3\36\3\36\3\36\7\36\u018d\n\36"+
 		"\f\36\16\36\u0190\13\36\3\37\3\37\3\37\3\37\7\37\u0196\n\37\f\37\16\37"+
-		"\u0199\13\37\3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \5 \u01ab"+
-		"\n \3 \3 \3 \3 \3 \3 \3 \5 \u01b4\n \3 \3 \3 \3 \5 \u01ba\n \3!\3!\3!"+
-		"\3!\3!\3!\3!\7!\u01c3\n!\f!\16!\u01c6\13!\3\"\3\"\3#\3#\3$\3$\3$\2\2%"+
+		"\u0199\13\37\3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \3 \5 \u01ac"+
+		"\n \3 \3 \3 \3 \3 \3 \3 \5 \u01b5\n \3 \3 \3 \3 \5 \u01bb\n \3!\3!\3!"+
+		"\3!\3!\3!\3!\7!\u01c4\n!\f!\16!\u01c7\13!\3\"\3\"\3#\3#\3$\3$\3$\2\2%"+
 		"\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<>@BDF\2"+
-		"\b\3\2\64\66\5\2\7\7\13\f\67\67\3\2\'(\3\2).\3\2/\60\3\2\61\63\2\u01e8"+
+		"\b\3\2\64\66\5\2\7\7\13\f\67\67\3\2\'(\3\2).\3\2/\60\3\2\61\63\2\u01e9"+
 		"\2H\3\2\2\2\4^\3\2\2\2\6\u008d\3\2\2\2\b\u008f\3\2\2\2\n\u0091\3\2\2\2"+
 		"\f\u009c\3\2\2\2\16\u00a0\3\2\2\2\20\u00ad\3\2\2\2\22\u00b2\3\2\2\2\24"+
 		"\u00cd\3\2\2\2\26\u00d8\3\2\2\2\30\u00e1\3\2\2\2\32\u00f9\3\2\2\2\34\u00fb"+
 		"\3\2\2\2\36\u0106\3\2\2\2 \u0109\3\2\2\2\"\u0112\3\2\2\2$\u0136\3\2\2"+
 		"\2&\u0141\3\2\2\2(\u0143\3\2\2\2*\u0146\3\2\2\2,\u0148\3\2\2\2.\u014e"+
 		"\3\2\2\2\60\u0156\3\2\2\2\62\u015f\3\2\2\2\64\u016f\3\2\2\2\66\u0177\3"+
-		"\2\2\28\u017f\3\2\2\2:\u0186\3\2\2\2<\u0191\3\2\2\2>\u01b9\3\2\2\2@\u01bb"+
-		"\3\2\2\2B\u01c7\3\2\2\2D\u01c9\3\2\2\2F\u01cb\3\2\2\2HI\7\3\2\2IM\7\67"+
+		"\2\2\28\u017f\3\2\2\2:\u0186\3\2\2\2<\u0191\3\2\2\2>\u01ba\3\2\2\2@\u01bc"+
+		"\3\2\2\2B\u01c8\3\2\2\2D\u01ca\3\2\2\2F\u01cc\3\2\2\2HI\7\3\2\2IM\7\67"+
 		"\2\2JL\5\4\3\2KJ\3\2\2\2LO\3\2\2\2MK\3\2\2\2MN\3\2\2\2NP\3\2\2\2OM\3\2"+
 		"\2\2PT\7\4\2\2QS\5\30\r\2RQ\3\2\2\2SV\3\2\2\2TR\3\2\2\2TU\3\2\2\2UW\3"+
 		"\2\2\2VT\3\2\2\2WX\7\5\2\2X\3\3\2\2\2Y_\5\6\4\2Z_\5\n\6\2[_\5\22\n\2\\"+
@@ -3468,26 +3471,27 @@ public class SimpleLangParser extends Parser {
 		"\u0191\u0197\5> \2\u0192\u0193\5F$\2\u0193\u0194\5> \2\u0194\u0196\3\2"+
 		"\2\2\u0195\u0192\3\2\2\2\u0196\u0199\3\2\2\2\u0197\u0195\3\2\2\2\u0197"+
 		"\u0198\3\2\2\2\u0198=\3\2\2\2\u0199\u0197\3\2\2\2\u019a\u019b\7 \2\2\u019b"+
-		"\u019c\7\21\2\2\u019c\u019d\7\67\2\2\u019d\u01ba\7\22\2\2\u019e\u019f"+
-		"\7!\2\2\u019f\u01a0\7\21\2\2\u01a0\u01a1\5:\36\2\u01a1\u01a2\7\22\2\2"+
-		"\u01a2\u01ba\3\2\2\2\u01a3\u01a4\7\"\2\2\u01a4\u01a5\7\21\2\2\u01a5\u01a6"+
-		"\5:\36\2\u01a6\u01a7\7\22\2\2\u01a7\u01ba\3\2\2\2\u01a8\u01aa\5@!\2\u01a9"+
-		"\u01ab\5,\27\2\u01aa\u01a9\3\2\2\2\u01aa\u01ab\3\2\2\2\u01ab\u01ba\3\2"+
-		"\2\2\u01ac\u01ba\5\b\5\2\u01ad\u01ae\7#\2\2\u01ae\u01b3\5\"\22\2\u01af"+
-		"\u01b0\7$\2\2\u01b0\u01b1\5:\36\2\u01b1\u01b2\7%\2\2\u01b2\u01b4\3\2\2"+
-		"\2\u01b3\u01af\3\2\2\2\u01b3\u01b4\3\2\2\2\u01b4\u01ba\3\2\2\2\u01b5\u01b6"+
-		"\7\21\2\2\u01b6\u01b7\5:\36\2\u01b7\u01b8\7\22\2\2\u01b8\u01ba\3\2\2\2"+
-		"\u01b9\u019a\3\2\2\2\u01b9\u019e\3\2\2\2\u01b9\u01a3\3\2\2\2\u01b9\u01a8"+
-		"\3\2\2\2\u01b9\u01ac\3\2\2\2\u01b9\u01ad\3\2\2\2\u01b9\u01b5\3\2\2\2\u01ba"+
-		"?\3\2\2\2\u01bb\u01c4\7\67\2\2\u01bc\u01bd\7&\2\2\u01bd\u01c3\7\67\2\2"+
-		"\u01be\u01bf\7$\2\2\u01bf\u01c0\5:\36\2\u01c0\u01c1\7%\2\2\u01c1\u01c3"+
-		"\3\2\2\2\u01c2\u01bc\3\2\2\2\u01c2\u01be\3\2\2\2\u01c3\u01c6\3\2\2\2\u01c4"+
-		"\u01c2\3\2\2\2\u01c4\u01c5\3\2\2\2\u01c5A\3\2\2\2\u01c6\u01c4\3\2\2\2"+
-		"\u01c7\u01c8\t\5\2\2\u01c8C\3\2\2\2\u01c9\u01ca\t\6\2\2\u01caE\3\2\2\2"+
-		"\u01cb\u01cc\t\7\2\2\u01ccG\3\2\2\2/MT^kz\u0089\u008d\u0097\u009e\u00a8"+
-		"\u00b0\u00b5\u00b8\u00be\u00c5\u00c9\u00d3\u00dc\u00e5\u00eb\u00f2\u00f9"+
-		"\u0103\u010f\u011f\u0132\u0136\u0141\u014a\u0153\u015d\u0162\u0166\u016a"+
-		"\u0174\u017c\u0183\u0186\u018e\u0197\u01aa\u01b3\u01b9\u01c2\u01c4";
+		"\u019c\7\21\2\2\u019c\u019d\5@!\2\u019d\u019e\7\22\2\2\u019e\u01bb\3\2"+
+		"\2\2\u019f\u01a0\7!\2\2\u01a0\u01a1\7\21\2\2\u01a1\u01a2\5:\36\2\u01a2"+
+		"\u01a3\7\22\2\2\u01a3\u01bb\3\2\2\2\u01a4\u01a5\7\"\2\2\u01a5\u01a6\7"+
+		"\21\2\2\u01a6\u01a7\5:\36\2\u01a7\u01a8\7\22\2\2\u01a8\u01bb\3\2\2\2\u01a9"+
+		"\u01ab\5@!\2\u01aa\u01ac\5,\27\2\u01ab\u01aa\3\2\2\2\u01ab\u01ac\3\2\2"+
+		"\2\u01ac\u01bb\3\2\2\2\u01ad\u01bb\5\b\5\2\u01ae\u01af\7#\2\2\u01af\u01b4"+
+		"\5\"\22\2\u01b0\u01b1\7$\2\2\u01b1\u01b2\5:\36\2\u01b2\u01b3\7%\2\2\u01b3"+
+		"\u01b5\3\2\2\2\u01b4\u01b0\3\2\2\2\u01b4\u01b5\3\2\2\2\u01b5\u01bb\3\2"+
+		"\2\2\u01b6\u01b7\7\21\2\2\u01b7\u01b8\5:\36\2\u01b8\u01b9\7\22\2\2\u01b9"+
+		"\u01bb\3\2\2\2\u01ba\u019a\3\2\2\2\u01ba\u019f\3\2\2\2\u01ba\u01a4\3\2"+
+		"\2\2\u01ba\u01a9\3\2\2\2\u01ba\u01ad\3\2\2\2\u01ba\u01ae\3\2\2\2\u01ba"+
+		"\u01b6\3\2\2\2\u01bb?\3\2\2\2\u01bc\u01c5\7\67\2\2\u01bd\u01be\7&\2\2"+
+		"\u01be\u01c4\7\67\2\2\u01bf\u01c0\7$\2\2\u01c0\u01c1\5:\36\2\u01c1\u01c2"+
+		"\7%\2\2\u01c2\u01c4\3\2\2\2\u01c3\u01bd\3\2\2\2\u01c3\u01bf\3\2\2\2\u01c4"+
+		"\u01c7\3\2\2\2\u01c5\u01c3\3\2\2\2\u01c5\u01c6\3\2\2\2\u01c6A\3\2\2\2"+
+		"\u01c7\u01c5\3\2\2\2\u01c8\u01c9\t\5\2\2\u01c9C\3\2\2\2\u01ca\u01cb\t"+
+		"\6\2\2\u01cbE\3\2\2\2\u01cc\u01cd\t\7\2\2\u01cdG\3\2\2\2/MT^kz\u0089\u008d"+
+		"\u0097\u009e\u00a8\u00b0\u00b5\u00b8\u00be\u00c5\u00c9\u00d3\u00dc\u00e5"+
+		"\u00eb\u00f2\u00f9\u0103\u010f\u011f\u0132\u0136\u0141\u014a\u0153\u015d"+
+		"\u0162\u0166\u016a\u0174\u017c\u0183\u0186\u018e\u0197\u01ab\u01b4\u01ba"+
+		"\u01c3\u01c5";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

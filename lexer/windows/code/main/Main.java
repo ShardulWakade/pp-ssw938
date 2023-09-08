@@ -1,13 +1,11 @@
 package main;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.HashSet;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStreams;
 
 import antlrgen.*;
 import error.*;
@@ -16,23 +14,28 @@ import visitors.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        InputStream in = new FileInputStream("./lexer/tests/declareCheck/1.prog");
-
-        SimpleLangLexer lexer = new SimpleLangLexer(new ANTLRInputStream(in));
-        lexer.removeErrorListeners();
-        lexer.addErrorListener(LexerErrorListener.INSTANCE);
+        Path path = FileSystems.getDefault().getPath("lexer/tests/16.prog");
+        SimpleLangLexer lexer = new SimpleLangLexer(CharStreams.fromPath(path));
+    //  lexer.removeErrorListeners();
+    //  lexer.addErrorListener(LexerErrorListener.INSTANCE);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         SimpleLangParser parser = new SimpleLangParser(tokens);
-     //   parser.removeErrorListeners();
-      //  parser.addErrorListener(ParserErrorListener.INSTANCE);
+     // parser.removeErrorListeners();
+     // parser.addErrorListener(ParserErrorListener.INSTANCE);
+
+        System.out.println("\n--------------------------------------------\n");
+        System.out.println("LEXER/PARSER ERRORS : ");
 
         ParseTree tree = parser.project();
+
+        System.out.println("\n--------------------------------------------\n");
+        System.out.println("SEMANTIC ERRORS : ");
         
         EntryChecker entryChecker = new EntryChecker();
         if(!entryChecker.visit(tree)){
-            System.out.println("ERROR : No appropriate entry function found!");
+            System.out.println("ENTRY ERROR : No appropriate entry function found!");
         }
 
         Types types = new Types();
@@ -44,8 +47,9 @@ public class Main {
         DeclareCheckVisitor declareCheck = new DeclareCheckVisitor(scopeTree, types);
         declareCheck.visit(tree);
 
-        System.out.println("\n\n--------------------------------------------\n\n");
-
+        System.out.println("\n--------------------------------------------\n");
+        System.out.println("INTERNAL REPRESENTATION BY SEMANTIC ANALYSIS (only for debugging/developement)");
+        System.out.println("\n--------------------------------------------\n");
         System.out.println(scopeTree);
     }
 }
