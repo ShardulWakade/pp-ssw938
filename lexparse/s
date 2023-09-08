@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# NOTE: do NOT modify this file.
+
+set -e
+
+cp="$(pwd)/antlr-4.9.2-complete.jar"
+test="$(pwd)/tests/0.prog"
+
+echo "Processing grammar ..."
+( cd code
+  java -Xmx500M -cp ${cp} org.antlr.v4.Tool -visitor -o ./antlrgen -package antlrgen SimpleLang.g4
+  javac -cp ${cp}:. ./antlrgen/*.java ./error/*.java ./main/*.java ./structure/*.java ./visitors/*.java )
+
+echo "Running one input example ..."
+( cd code
+  ./simple ${test} )
