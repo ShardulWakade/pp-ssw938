@@ -14,7 +14,13 @@ import visitors.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        Path path = FileSystems.getDefault().getPath("lexer/tests/16.prog");
+
+        if(args.length == 0){
+            System.out.println("Please enter File to read program from.");
+            return;
+        }
+
+        Path path = FileSystems.getDefault().getPath(args[0]);
         SimpleLangLexer lexer = new SimpleLangLexer(CharStreams.fromPath(path));
     //  lexer.removeErrorListeners();
     //  lexer.addErrorListener(LexerErrorListener.INSTANCE);
