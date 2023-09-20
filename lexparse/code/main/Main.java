@@ -22,22 +22,22 @@ public class Main {
 
         Path path = FileSystems.getDefault().getPath(args[0]);
         SimpleLangLexer lexer = new SimpleLangLexer(CharStreams.fromPath(path));
-    //  lexer.removeErrorListeners();
-    //  lexer.addErrorListener(LexerErrorListener.INSTANCE);
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(LexerErrorListener.INSTANCE);
 
         CommonTokenStream tokens = new CommonTokenStream(lexer);
 
         SimpleLangParser parser = new SimpleLangParser(tokens);
-     // parser.removeErrorListeners();
-     // parser.addErrorListener(ParserErrorListener.INSTANCE);
+        parser.removeErrorListeners();
+        parser.addErrorListener(ParserErrorListener.INSTANCE);
 
-        System.out.println("\n--------------------------------------------\n");
-        System.out.println("LEXER/PARSER ERRORS : ");
+        // System.out.println("\n--------------------------------------------\n");
+        // System.out.println("LEXER/PARSER ERRORS : ");
 
         ParseTree tree = parser.project();
 
-        System.out.println("\n--------------------------------------------\n");
-        System.out.println("SEMANTIC ERRORS : ");
+        // System.out.println("\n--------------------------------------------\n");
+        // System.out.println("SEMANTIC ERRORS : ");
         
         EntryChecker entryChecker = new EntryChecker();
         if(!entryChecker.visit(tree)){
@@ -53,9 +53,9 @@ public class Main {
         DeclareCheckVisitor declareCheck = new DeclareCheckVisitor(scopeTree, types);
         declareCheck.visit(tree);
 
-        System.out.println("\n--------------------------------------------\n");
-        System.out.println("INTERNAL REPRESENTATION BY SEMANTIC ANALYSIS (only for debugging/developement)");
-        System.out.println("\n--------------------------------------------\n");
-        System.out.println(scopeTree);
+        // System.out.println("\n--------------------------------------------\n");
+        // System.out.println("INTERNAL REPRESENTATION BY SEMANTIC ANALYSIS (only for debugging/developement)");
+        // System.out.println("\n--------------------------------------------\n");
+        // System.out.println(scopeTree);
     }
 }
