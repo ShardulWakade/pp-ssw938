@@ -13,14 +13,14 @@ extern "C" int checkLexParse(const char* message){
     ANTLRInputStream instream(message);
     
     CypherLexer lexer(&instream);
-    lexer.removeErrorListeners();
+    // lexer.removeErrorListeners();
 
     CommonTokenStream tokens(&lexer);
     
     tokens.fill();
 
     CypherParser parser(&tokens);
-    parser.removeErrorListeners();
+    // parser.removeErrorListeners();
 
     tree::ParseTree* tree = parser.oC_Cypher();
 

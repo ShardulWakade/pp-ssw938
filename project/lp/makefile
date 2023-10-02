@@ -1,9 +1,9 @@
 
 test/lptest: lib/liblp.so test/lptest.o
-	c++ test/lptest.o lib/liblp.so lib/libantlr4-runtime.so.4.13.1 -o test/lptest
+	c++ test/lptest.o lib/liblp.so lib/libantlr4-runtime.so -o test/lptest
 
-lib/liblp.so: build/gen/CypherLexer.o build/gen/CypherParser.o build/main/lp.o lib/libantlr4-runtime.so.4.13.1
-	c++ -shared build/main/*.o build/gen/*.o lib/libantlr4-runtime.so.4.13.1 -o lib/liblp.so
+lib/liblp.so: build/gen/CypherLexer.o build/gen/CypherParser.o build/main/lp.o lib/libantlr4-runtime.so
+	c++ -shared build/main/*.o build/gen/*.o lib/libantlr4-runtime.so -o lib/liblp.so
 
 build/gen/CypherLexer.o: src/gen/CypherLexer.cpp inc/CypherLexer.h
 	c++ -Iinc -fPIC src/gen/CypherLexer.cpp -c -o build/gen/CypherLexer.o
