@@ -4,52 +4,54 @@ set -e 1
 
 c++ -fPIC -I. *.cpp -c 
 
-echo -e "\n10% done\n"
+echo -e "30% done"
 
 cd atn
 c++ -fPIC -I.. *.cpp -c 
 cd ..
 
-echo -e "\n24% done\n"
+echo -e "60% done"
 
 cd dfa
 c++ -fPIC -I.. *.cpp -c
 cd ..
 
-echo -e "\n37% done\n"
+echo -e "67% done"
 
 cd internal
 c++ -fPIC -I.. *.cpp -c
 cd ..
 
-echo -e "\n60% done\n"
+echo -e "70% done"
 
 cd misc
 c++ -fPIC -I.. *.cpp -c
 cd ..
 
-echo -e "\n70% done\n"
+echo -e "78% done"
 
 cd support
 c++ -fPIC -I.. *.cpp -c
 cd ..
 
-echo -e "\n85% done\n"
+echo -e "85% done"
 
 cd tree
 c++ -fPIC -I.. *.cpp -c
 
-echo -e "\n90% done\n"
+echo -e "90% done"
 
 cd pattern
 c++ -fPIC -I../.. *.cpp -c
 
-echo -e "\n95% done\n"
+echo -e "95% done"
 cd ..
 cd xpath
 c++ -fPIC -I../.. *.cpp -c
 cd ..
 cd ..
+
+echo -e "100% done!"
 
 exit 0
 

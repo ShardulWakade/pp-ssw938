@@ -6,12 +6,14 @@ LIB_DIR=$SCRIPT_DIR"/lib"
 echo -e "Starting Compilation\n"
 
 if ! test -f lib/libantlr4-runtime.so; then
-    echo "Couldn't find libantlr4-runtime.so"
-    echo "Starting Compilation for libantlr4-runtime.so (This may take a while to build)"
+    echo "Since libantlr4-runtime.so wasn't found, we will now compile it manually"
+    echo "Starting Compilation for libantlr4-runtime.so (This takes about 4 minutes to build.)"
     
     cd inc
     ./build.sh
     cd ..
+
+    echo "Linking all compiled files into lib/libantlr4-runtime.so"
 
     c++ -shared inc/atn/*.o inc/dfa/*.o inc/internal/*.o inc/misc/*.o inc/support/*.o inc/tree/*.o inc/tree/pattern/*.o inc/tree/xpath/*.o inc/*.o  -o lib/libantlr4-runtime.so
     
@@ -42,7 +44,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -e "\nNow calling the test program to test my libsp.so (Contains lexer and parser)\n"
-
+echo "-----------------------------------------------------"
 test/lptest
-
+echo "-----------------------------------------------------"
 exit 0

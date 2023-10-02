@@ -3,5 +3,6 @@
 *~
 *.class
 project/lp/test/lptest
+project/client/Client
 javacc-7.0.10.tar.gz
 javacc-javacc-7.0.10
