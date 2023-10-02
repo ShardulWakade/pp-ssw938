@@ -3,9 +3,14 @@
 #include "../src/main/lp.h"
 
 int main(){
-    const char* tester = "Hello World";
-    std::cout << "Testing with String " << tester << std::endl;
-    int ret = checkLexParse("Hello World");
-    std::cout << "Done test " << ret << std::endl;
+    const char* tester = "Hello World ; ";
+    
+    std::cout << "Testing with Hello World" << std::endl;
+    std::vector<LexParseError> errors = checkLexParse(tester);
+    std::cout << "Number of errors detected = " << errors.size() << std::endl ;
+    
+    for(auto error : errors){
+        std::cout << "ERROR on line " << error.line << ":" << error.charPositionInLine << "\n\t" << error.msg << std::endl;
+    }
 }
 
