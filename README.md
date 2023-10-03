@@ -37,3 +37,16 @@ To execute this program, first cd into project/lp and then call build.sh - It is
 
 This will start the database, try to run cypher-shell until a connection is established, and then pass a simple query to the shell. After this it will stop the database.
 
+<h3>Client Program Manual</h3>
+
+The client program is very simple and instructions for using it should be in the program itself.
+
+Follow the instructions mentioned above to build and start the Client program. The client program has been kept very simplistic for now as I later plan to move it to Java. I have not yet done my research over JNI (Java Native Interface) and so the Client is written in C++.
+
+Type in commands. Press enter to split your command across multiple lines.
+Then do @run to send it to the lexer/parser. <br />
+">>>" Means that this is the start of your command <br />
+"..." Means that this is the continuation of your current command <br />
+
+
+Use @quit or EOF to quit the program.
