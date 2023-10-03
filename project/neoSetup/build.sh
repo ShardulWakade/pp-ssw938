@@ -23,25 +23,14 @@ fi
 
 ## By this point we should have neo4j setup. Now we need to check if we have the username and password
 
+if [ "$FIRST_TIME" = true ]; then
+    ./neo4j-community-4.4.0/bin/neo4j-admin set-initial-password shardul
+fi
+
 echo "neo4j has been setup! Starting neo4j"
 
 ./neo4j-community-4.4.0/bin/neo4j start
 
-if [ "$FIRST_TIME" = true ]; then
-    echo -e "\n\n\n\n-------------------------------"
-    echo "MESSAGE TO USER:"
-    echo "Please type neo4j and neo4j for username and password."
-    echo "For changed password please type \"shardul\" for the proper execution of the remainder of this script"
-    echo "Then type :quit to quit"
-
-    ./neo4j-community-4.4.0/bin/cypher-shell
-
-    while [ $? -ne 0 ]; 
-    do
-        echo "Problem occured"
-        ./neo4j-community-4.4.0/bin/cypher-shell
-    done
-fi
 
 # Assuming username "neo4j" and password "shardul"
 
@@ -49,7 +38,8 @@ fi
 
 while [ $? -ne 0 ]; 
 do
-    ./neo4j-community-4.4.0/bin/cypher-shell
+    echo "Trying again..."
+    ./neo4j-community-4.4.0/bin/cypher-shell -u neo4j -p shardul < Queries.txt
 done
 
 ./neo4j-community-4.4.0/bin/neo4j stop
