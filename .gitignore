@@ -2,7 +2,10 @@
 *.so
 *~
 *.class
+*.tar.gz
 project/lp/test/lptest
 project/client/Client
+project/neoSetup/neo4j-community-4.4.0
+project/neoSetup/clear.sh
 javacc-7.0.10.tar.gz
 javacc-javacc-7.0.10
