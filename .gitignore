@@ -3,9 +3,12 @@
 *~
 *.class
 *.tar.gz
+*.json
 project/lp/test/lptest
 project/client/Client
-project/neoSetup/neo4j-community-4.4.0
-project/neoSetup/clear.sh
+project/client/Adapt
+project/server/Connector
+project/server/neo4j-community-4.4.0
+project/server/clear.sh
 javacc-7.0.10.tar.gz
 javacc-javacc-7.0.10

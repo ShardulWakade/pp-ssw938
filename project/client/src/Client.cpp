@@ -2,23 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
-void printFancyHeader(){
-    std::cout << "+-----------------------+" << std::endl;
-    std::cout << "|      CLIENT PROG      |" << std::endl;
-    std::cout << "+-----------------------+\n" << std::endl;
-}
-
-void printFancyExit(){
-    std::cout << "\n+-----------------------+" << std::endl;
-    std::cout <<   "|       THANK YOU       |" << std::endl;
-    std::cout <<   "+-----------------------+" << std::endl;
-}
-
-void printInstructions(){
-    std::cout << "Enter a command and then type @run to send commands to the lexer/parser" << std::endl;
-    std::cout << "Enter @quit to quit the program." << std::endl;
-}
+#include "PrintHelper.h"
+#include "SpawnChild.h"
+#include <cassert>
 
 // true means not EOF. false means EOF
 bool addLinesInto(std::vector<std::string>& lines, std::istream& in){
@@ -39,32 +25,83 @@ bool addLinesInto(std::vector<std::string>& lines, std::istream& in){
     return false;
 }
 
-std::vector<LexParseError> runCommand(const std::vector<std::string>& lines){
-    // Append all lines into a single string. Then send to parser
-
+std::string joinWith(const std::vector<std::string>& lines, char join){
     std::string command;
     for(const auto& str : lines){
         command += str;
-        command += '\n';
+        command += join;
     }
-
-    std::cout << "\nSending this command to the parser\n";
-    return checkLexParse(command.c_str());
+    return command;
 }
 
-void printAptErrorMessage(const std::vector<std::string>& lines, const std::vector<LexParseError>& errors){
-    std::cout << "\nThe following errors were found\n" << std::endl;
-    for(const auto& err : errors){
-        std::cout << "Error on line " << err.line << "\n\t" << lines[err.line-1] << "\n\t";
-        
-        std::string spaces(err.charPositionInLine, ' ');
+bool runCommand(const std::vector<std::string>& lines, std::ostream& toChild){
+    // Append all lines into a single string. Then send to parser
 
-        std::cout << spaces << '^' << std::endl;
-        std::cout << spaces << err.msg << std::endl;
+    std::string command = joinWith(lines, '\n');
+
+    auto errors = checkLexParse(command.c_str());
+
+    if(errors.empty()){
+        std::string singleLinedCommand = joinWith(lines, ' ');
+        std::cout << "Sending to server" << std::endl;
+        toChild << "COMMAND" << std::endl;
+        toChild << singleLinedCommand << std::endl;
+        return true;
+    } 
+    else {
+        printAptErrorMessage(lines, errors);
+        return false;
     }
+}
+
+struct ChildResponse {
+    std::string responseType;
+    size_t responseLength;
+    std::vector<std::string> responseLines;
+
+    friend std::ostream& operator<<(std::ostream& out, const ChildResponse& resp){
+        out << "ChildResponse[responseType=" << resp.responseType << ", responseLength=" << resp.responseLength << ", responseLines={";
+        for(const auto& line : resp.responseLines){
+            out << "\n\t" << line;
+        }        
+        return out << "\n}";
+    }
+};
+
+ChildResponse expectResponse(std::istream& fromChild){
+    ChildResponse resp;
+    
+    if(!std::getline(fromChild, resp.responseType)){assert(false);}
+    
+    assert(fromChild >> resp.responseLength);
+    std::string throwaway;
+    if(!std::getline(fromChild, throwaway)){assert(false);}
+    
+    resp.responseLines.reserve(resp.responseLength);
+
+    std::string childLine;
+    for(size_t i = 0; i < resp.responseLength; i++){
+        std::getline(fromChild, childLine);
+        resp.responseLines.push_back(childLine);
+    }
+
+    return resp;
 }
 
 int main(){
+
+    // Spawn child process
+    auto parentChildPipes = createChild();
+	
+	__gnu_cxx::stdio_filebuf<char> inbuf(parentChildPipes.fdParentIn, std::ios::in);
+	std::istream fromChild(&inbuf);
+	
+	__gnu_cxx::stdio_filebuf<char> outbuf(parentChildPipes.fdParentOut, std::ios::out);
+	std::ostream toChild(&outbuf);
+	
+	signal(SIGCHLD, onAbruptChildExit);
+
+    // Begin accepting queries
     printFancyHeader();
     printInstructions();
 
@@ -84,12 +121,9 @@ int main(){
                 std::cout << "Empty command : nothing to send." << std::endl;
             }
             else {
-                std::vector<LexParseError> errors = runCommand(lines);
-                if(errors.empty()){
-                    std::cout << "No errors were found in the message!" << std::endl;
-                } 
-                else {
-                    printAptErrorMessage(lines, errors);
+                if(runCommand(lines, toChild)){ // If command was succesful, expect a response
+                    ChildResponse resp = expectResponse(fromChild);
+                    std::cout << "Received Response : " << resp << std::endl;
                 }
             }
         }
@@ -98,6 +132,7 @@ int main(){
         std::cout << ">>> ";
     }
 
+    killChild(parentChildPipes);
     printFancyExit();
 
 }

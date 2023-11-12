@@ -25,8 +25,8 @@ cd ..
 echo -e "\nBuild finished successfully."
 echo -e "\nTo test out the Client program, use testClient.sh\n\n" 
 
-echo "Now Setting up neo4j and testing it"
-cd neoSetup
+echo "Building server"
+cd server
 ./build.sh
 cd ..
 

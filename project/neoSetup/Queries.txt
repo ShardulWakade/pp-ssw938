@@ -1,8 +1,0 @@
-CREATE (a:City {name: "Austin", population_size: 10000});
-CREATE (b:City {name: "New York", population_size: 2000000});
-
-MATCH (c:City)
-WHERE c.population_size < 20000
-RETURN c;
-
-:quit

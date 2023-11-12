@@ -27,19 +27,13 @@ if [ "$FIRST_TIME" = true ]; then
     ./neo4j-community-4.4.0/bin/neo4j-admin set-initial-password shardul
 fi
 
-echo "neo4j has been setup! Starting neo4j"
+echo "neo4j has been setup(off)!"
 
-./neo4j-community-4.4.0/bin/neo4j start
+cd goconnector
+go get .
+go build -o ../Connector .
+cd ..
 
 
-# Assuming username "neo4j" and password "shardul"
 
-./neo4j-community-4.4.0/bin/cypher-shell -u neo4j -p shardul < Queries.txt
 
-while [ $? -ne 0 ]; 
-do
-    echo "Trying again..."
-    ./neo4j-community-4.4.0/bin/cypher-shell -u neo4j -p shardul < Queries.txt
-done
-
-./neo4j-community-4.4.0/bin/neo4j stop

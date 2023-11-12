@@ -16,7 +16,14 @@ fi
 
 echo "Starting Compilation of Client"
 
-make
+make 
+
+if [ $? -ne 0 ]; then
+    echo "Unable to compile Client program. Please contact me at shardulwakade2003@gmail.com"
+    exit 1
+fi
+
+./createAdapt.sh
 
 if [ $? -ne 0 ]; then
     echo "Unable to compile Client program. Please contact me at shardulwakade2003@gmail.com"
@@ -36,13 +43,13 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-echo -e "Running Client Program with 2 sample tests: TestInput1.txt and TestInput2.txt"
-echo -e "Please note that output will not look that pretty as Inputted text isnt displayed on the Console\n"
+# echo -e "Running Client Program with 2 sample tests: TestInput1.txt and TestInput2.txt"
+# echo -e "Please note that output will not look that pretty as Inputted text isnt displayed on the Console\n"
 
-echo -e "\nTesting TestInput1\n"
-./Client < TestInput1.txt
+# echo -e "\nTesting TestInput1\n"
+# ./Client < TestInput1.txt
 
-echo -e "\nTesting TestInput2\n"
-./Client < TestInput2.txt
+# echo -e "\nTesting TestInput2\n"
+# ./Client < TestInput2.txt
 
 exit 0
