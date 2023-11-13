@@ -3,6 +3,8 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
+	"net/http"
 	"os"
 )
 
@@ -40,6 +42,10 @@ func main() {
 
 	for scanner.Scan() {
 		if scanner.Text() != "COMMAND" {
+			resp, _ := http.Get("http://localhost:8080/var")
+			body, _ := io.ReadAll(resp.Body)
+			fmt.Println(string(body))
+			resp.Body.Close()
 			continue
 		}
 		if !scanner.Scan() {

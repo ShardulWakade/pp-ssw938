@@ -29,10 +29,7 @@ fi
 
 echo "neo4j has been setup(off)!"
 
-cd goconnector
-go get .
-go build -o ../Connector .
-cd ..
+make Connector
 
 
 

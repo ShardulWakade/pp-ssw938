@@ -132,6 +132,7 @@ int main(){
         std::cout << ">>> ";
     }
 
+    signal(SIGCHLD, SIG_DFL);
     killChild(parentChildPipes);
     printFancyExit();
 

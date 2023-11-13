@@ -1,6 +1,9 @@
 Client: bin/Client.o bin/PrintHelper.o bin/SpawnChild.o lib/liblp.so lib/libantlr4-runtime.so
 	c++ bin/Client.o bin/PrintHelper.o bin/SpawnChild.o lib/liblp.so lib/libantlr4-runtime.so -o Client
 
+Adapt: adapter/*
+	./createAdapt.sh
+
 lib/liblp.so:
 	cp ../lp/lib/liblp.so lib
 

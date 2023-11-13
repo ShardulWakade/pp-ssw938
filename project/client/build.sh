@@ -16,32 +16,32 @@ fi
 
 echo "Starting Compilation of Client"
 
-make 
+make Client
 
 if [ $? -ne 0 ]; then
     echo "Unable to compile Client program. Please contact me at shardulwakade2003@gmail.com"
     exit 1
 fi
 
-./createAdapt.sh
+make Adapt
 
 if [ $? -ne 0 ]; then
     echo "Unable to compile Client program. Please contact me at shardulwakade2003@gmail.com"
     exit 1
 fi
 
-echo "Compilation Successful. Now setting environment variables"
+echo "Compilation Successful."
 
-if [ -z "$LD_LIBRARY_PATH" ]; then
-    export LD_LIBRARY_PATH=$LIB_DIR
-else
-    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH":"$LIB_DIR
-fi
+# if [ -z "$LD_LIBRARY_PATH" ]; then
+#   export LD_LIBRARY_PATH=$LIB_DIR
+# else
+#   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH":"$LIB_DIR
+# fi
 
-if [ $? -ne 0 ]; then
-    echo -e "\nFailed to set LD_LIBRARY_PATH"
-    exit 1
-fi
+# if [ $? -ne 0 ]; then
+#    echo -e "\nFailed to set LD_LIBRARY_PATH"
+#    exit 1
+# fi
 
 # echo -e "Running Client Program with 2 sample tests: TestInput1.txt and TestInput2.txt"
 # echo -e "Please note that output will not look that pretty as Inputted text isnt displayed on the Console\n"

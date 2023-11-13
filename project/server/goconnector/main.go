@@ -1,52 +1,32 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"os"
 )
 
-var server CypherServer
-
-func getCompleteGraph(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, server.GetGraph())
-}
-
-func postQuery(c *gin.Context) {
-	var query string
-
-	if err := c.BindJSON(&query); err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	response, err := server.TryQuery(query)
-
-	if err != nil {
-		c.IndentedJSON(http.StatusCreated, fmt.Sprint(err))
-	} else {
-		c.IndentedJSON(http.StatusCreated, response)
+func assert(b bool, msg string) {
+	if !b {
+		panic("ASSERTION FAILURE: " + msg)
 	}
 }
 
 func main() {
 	fmt.Println("Start")
 
-	var err error
+	InitUser()
+	StartRestAPI()
+	waitForQuit()
 
-	server, err = NewCypherServer("neo4j://localhost", "neo4j", "shardul")
-	fmt.Println("Server at start:", server)
-	defer server.Exit()
+	fmt.Println("End")
+}
 
-	if err != nil {
-		panic(err)
+func waitForQuit() {
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		if scanner.Text() == "quit" {
+			break
+		}
 	}
-
-	router := gin.Default()
-	router.GET("/cypher", getCompleteGraph)
-	router.POST("/cypher", postQuery)
-
-	router.Run("localhost:8080")
-
 }

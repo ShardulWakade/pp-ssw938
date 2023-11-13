@@ -29,10 +29,10 @@ type CypherServer struct {
 	driver neo4j.DriverWithContext
 }
 
-func NewCypherServer(dbUri string, dbUser string, dbPassword string) (CypherServer, error) {
+func NewCypherServer(dbUser string, dbPassword string) (CypherServer, error) {
 	server := CypherServer{}
 	server.ctx = context.Background()
-	server.driver, _ = neo4j.NewDriverWithContext(dbUri, neo4j.BasicAuth(dbUser, dbPassword, ""))
+	server.driver, _ = neo4j.NewDriverWithContext("neo4j://localhost:7687", neo4j.BasicAuth(dbUser, dbPassword, ""))
 
 	err := server.driver.VerifyConnectivity(server.ctx)
 	return server, err
