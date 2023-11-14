@@ -4,6 +4,7 @@
 *.class
 *.tar.gz
 *.json
+*.log
 project/lp/test/lptest
 project/client/Client
 project/client/Adapt

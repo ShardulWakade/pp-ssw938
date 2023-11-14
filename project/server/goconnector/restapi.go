@@ -24,9 +24,8 @@
 *		Expected Input : string (username of logged in user)
 *
 *		if successful :				LoginAttemptResponse{true, "Logged off "+user.Username}
-*		if wrong input:
+*		if wrong input:				string(error)
 *		if not logged in :			LoginAttemptResponse{false, "Please login"}
-*
 *
 *	/cypher GET
 *
@@ -45,12 +44,18 @@
 *		if not loggedIn :			LoginAttemptResponse{false, "Please login"}
 *		if error		:			string(error)
 *
+*	/ping GET
+*
+*		Expected Input : None
+*
+*		always			: 			"pong"
  */
 
 package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -66,6 +71,8 @@ func InitUser() {
 func StartRestAPI() {
 	router = gin.Default()
 
+	router.GET("/ping", onPing)
+
 	router.POST("/login", onLoginPOST)
 	router.GET("/login", onLoginGET)
 
@@ -73,6 +80,8 @@ func StartRestAPI() {
 	router.GET("/cypher", onCypherGET)
 
 	router.POST("/logoff", onLogoffPOST)
+
+	router.GET("/shutdown", onShutdownGET)
 
 	go router.Run("localhost:8080")
 }
@@ -90,7 +99,7 @@ func onLoginPOST(c *gin.Context) {
 		return
 	}
 
-	usrname := decryptName(attempt.EncryptedUsername)
+	usrname := attempt.Username
 	passwd := decryptName(attempt.EncryptedPassword)
 
 	newuser := NewCypherUser(usrname)
@@ -101,7 +110,12 @@ func onLoginPOST(c *gin.Context) {
 
 	// This means successful login with current user.
 	user = newuser
-	SendLogicSuccess(c, "Login Successful")
+	log.Println(user)
+	SendLoginSuccess(c, "Login Successful")
+}
+
+func onPing(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, "pong")
 }
 
 func onLoginGET(c *gin.Context) {
@@ -174,18 +188,14 @@ func onLogoffPOST(c *gin.Context) {
 
 	if uname != user.Username {
 		SendLoginError(c, "User "+user.Username+" is currently logged in and not "+uname)
+		return
 	}
 
 	user.Logoff()
-	SendLogicSuccess(c, "Logged off "+user.Username)
+	SendLoginSuccess(c, "Logged off "+user.Username)
 }
 
-func AlreadyLoggedInError(c *gin.Context) {
-	assert(user.LoggedIn, "User not logged in: Invalid state")
-	SendLoginError(c, "User "+user.Username+" is already logged in")
-}
-
-func NotLoggedInError(c *gin.Context) {
-	assert(!user.LoggedIn, "User is logged in")
-	SendLoginError(c, "Please login")
+func onShutdownGET(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, "Server shutting down...")
+	EndMain <- 0
 }

@@ -4,10 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j/dbtype"
 )
+
+type Graph struct {
+	Nodes []dbtype.Node
+	Edges []dbtype.Relationship
+}
 
 type QueryResponseValue struct {
 	Field       string
@@ -76,47 +80,93 @@ func Purify(row *QueryResponseRow) {
 	}
 }
 
-func parseResponse(jsonResponse string) (string, []string) {
+// Post /cypher responses can be string, LoginAttemptResponse, or []QueryResponseRows
+func ParsePostCypherResponse(jsonBytes []byte) Message {
 	var errResp string
-	if json.Unmarshal([]byte(jsonResponse), &errResp) == nil { // This means we received an error string in return
-		splitted := strings.Split(strings.ReplaceAll(errResp, "\r\n", "\n"), "\n")
-		return "ERROR", splitted
+	if json.Unmarshal(jsonBytes, &errResp) == nil { // This means we recieved a error string
+		return NewErrorMessage(errResp)
 	}
 
-	rows := make([]QueryResponseRow, 0)
-	json.Unmarshal([]byte(jsonResponse), &rows)
-
-	for i := 0; i < len(rows); i++ {
-		Purify(&rows[i])
-	}
-
-	allRows := make([]string, 0)
-
-	for _, row := range rows {
-		singleRow := make([]string, 0)
-		for i := 0; i < len(row.RowFields); i++ {
-
-			s := ""
-			s += fmt.Sprintf("%v=", row.RowFields[i].Field)
-
-			switch row.RowFields[i].ValueType {
-			case "dbtype.Node":
-				s += fmt.Sprintf("Node(Labels:%v)", row.RowValues[i].(dbtype.Node).Labels)
-			case "dbtype.Relationship":
-				s += fmt.Sprintf("Edge[Type:%v]", row.RowValues[i].(dbtype.Relationship).Type)
-			case "string":
-				s += fmt.Sprintf("\"%v\"", row.RowValues[i])
-			case "int64":
-				s += fmt.Sprint(int64(row.RowValues[i].(float64)))
-			default:
-				s += fmt.Sprint(row.RowValues[i])
-			}
-			singleRow = append(singleRow, s)
+	var loginResponse LoginAttemptResponse
+	if json.Unmarshal(jsonBytes, &loginResponse) == nil { // This means we recieved a LoginAttemptResponse in return
+		if loginResponse.Success {
+			return NewUnexpectedResponseMessage("Unexpected response from the server") // We shouldnt be receiving a login success message
+		} else {
+			return NewLoginErrorMessage(loginResponse.ErrorMessage)
 		}
-		//		slices.Sort(singleRow)
-		allRows = append(allRows, fmt.Sprint(singleRow))
-		os.WriteFile("log.txt", []byte(fmt.Sprint(singleRow)), 0644)
 	}
 
-	return "COMMAND", allRows
+	// Else this must be a []QueryResponseRow
+	rows := make([]QueryResponseRow, 0)
+	if json.Unmarshal(jsonBytes, &rows) == nil { // We received a []QueryResponseRow
+
+		for i := 0; i < len(rows); i++ {
+			Purify(&rows[i])
+		}
+
+		allRows := make([]string, 0)
+
+		for _, row := range rows {
+			singleRow := make([]string, 0)
+			for i := 0; i < len(row.RowFields); i++ {
+
+				s := ""
+				s += fmt.Sprintf("%v=", row.RowFields[i].Field)
+
+				switch row.RowFields[i].ValueType {
+				case "dbtype.Node":
+					s += fmt.Sprintf("Node(Labels:%v)", row.RowValues[i].(dbtype.Node).Labels)
+				case "dbtype.Relationship":
+					s += fmt.Sprintf("Edge[Type:%v]", row.RowValues[i].(dbtype.Relationship).Type)
+				case "string":
+					s += fmt.Sprintf("\"%v\"", row.RowValues[i])
+				case "int64":
+					s += fmt.Sprint(int64(row.RowValues[i].(float64)))
+				default:
+					s += fmt.Sprint(row.RowValues[i])
+				}
+				singleRow = append(singleRow, s)
+			}
+			//		slices.Sort(singleRow)
+			allRows = append(allRows, fmt.Sprint(singleRow))
+			os.WriteFile("log.txt", []byte(fmt.Sprint(singleRow)), 0644)
+		}
+
+		return NewResponseMessage(allRows)
+	}
+
+	return NewMessageFromString("ERROR", "Received JSON response is corrupted :(")
+}
+
+// Post /login reponses can only be of type LoginAttemptResponse
+func ParsePostLoginResponse(jsonBytes []byte) Message {
+	var loginResponse LoginAttemptResponse
+	if json.Unmarshal(jsonBytes, &loginResponse) == nil { // This means we recieved a LoginAttemptResponse in return
+		if loginResponse.Success {
+			return NewSuccessMessage()
+		} else {
+			return NewLoginErrorMessage(loginResponse.ErrorMessage)
+		}
+	}
+
+	return NewMessageFromString("ERROR", "Received JSON response is corrupted :(")
+}
+
+func ParsePostLogoffResponse(jsonBytes []byte) Message {
+
+	var loginResponse LoginAttemptResponse
+	if json.Unmarshal(jsonBytes, &loginResponse) == nil { // This means we recieved a LoginAttemptResponse in return
+		if loginResponse.Success {
+			return NewSuccessMessage()
+		} else {
+			return NewLoginErrorMessage(loginResponse.ErrorMessage)
+		}
+	}
+
+	var msg string
+	if json.Unmarshal(jsonBytes, &msg) == nil { // If we received a string
+		return NewMessageFromString("ERROR", "Sent an invalid request to server")
+	}
+
+	return NewMessageFromString("ERROR", "Received JSON response is corrupted :(")
 }

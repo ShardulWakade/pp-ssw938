@@ -12,12 +12,22 @@ func assert(b bool, msg string) {
 	}
 }
 
+var EndMain chan int
+
 func main() {
 	fmt.Println("Start")
 
+	EndMain = make(chan int, 2)
+
 	InitUser()
 	StartRestAPI()
-	waitForQuit()
+	go waitForQuit()
+
+	<-EndMain
+
+	if user.LoggedIn {
+		user.Logoff()
+	}
 
 	fmt.Println("End")
 }
@@ -29,4 +39,5 @@ func waitForQuit() {
 			break
 		}
 	}
+	EndMain <- 0
 }
