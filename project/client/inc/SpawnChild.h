@@ -21,3 +21,5 @@ void onAbruptChildExit(int);
 DoublePipe createChild();
 
 void killChild(DoublePipe toClose);
+
+void waitForChildDeath(DoublePipe child);

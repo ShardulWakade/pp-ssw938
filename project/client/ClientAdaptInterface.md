@@ -34,6 +34,12 @@ Message from Client to Adapt :
 4)  GET_LOGIN
     0
 
+5)  SHUTDOWN
+    0
+
+6)  CLEAR_CACHE
+    0
+
 Message from Adapt to Client : 
 
 0)  Possible responses to PING: 
@@ -130,3 +136,20 @@ Message from Adapt to Client :
         ...
 
 
+5) Possible Responses to SHUTDOWN : (this is GET on /shutdown)
+    ->  CONNECTION_ERROR
+        number of lines in error message
+        line 1
+        line 2
+        ...
+
+    ->  RESPONSE
+        number of lines
+        line 1
+        line 2 
+        ...
+
+6) Possible Responses to CLEAR_CACHE : 
+    ->  SUCCESS
+        0
+    

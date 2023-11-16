@@ -1,12 +1,105 @@
-#include "lp.h"
+#include <assert.h>
+#include <unordered_map>
 #include <iostream>
 #include <vector>
 #include <string>
+
+#include "lp.h"
 #include "PrintHelper.h"
 #include "SpawnChild.h"
-#include <cassert>
+#include "SharedState.h"
+#include "ReceivableDirective.h"
 
-// true means not EOF. false means EOF
+static const std::unordered_map<std::string, Directive*> directives = {
+    {"@run",            new RunDirective("@run")},
+    {"@parse",          new ParseDirective("@parse")},
+    {"@forcesend",      new ForcesendDirective("@forcesend")},
+    {"@clearcache",     new ClearcacheDirective("@clearcache")},
+    {"@ping",           new PingDirective("@ping")},
+    {"@clear",          new ClearDirective("@clear")},
+    {"@quit",           new QuitDirective("@quit")},
+    {"@shutdown",       new ShutdownDirective("@shutdown")},
+    {"@logoff",         new LogoffDirective("@logoff")},
+    {"@user",           new UserDirective("@user")},
+    {"@login",          new LoginDirective("@login")}
+};
+
+// returns when a directive/EOF is encountered.
+// true means directive. false means EOF
+bool addLinesInto(std::vector<std::string>& lines, std::istream& in);
+void executeInitialUser(void);
+void freeDirectives(void);
+void helpCommand(void); // Displays help for all commands
+
+int main(){
+
+    // Spawn child process
+    auto parentChildPipes = createChild();
+    AdaptConnection connection(parentChildPipes);
+    shared::adapt = &connection;
+   	signal(SIGCHLD, onAbruptChildExit);
+
+    print::FancyHeader();
+    print::Instructions();
+
+    shared::isRunning = true;
+
+    executeInitialUser();
+
+    std::cout << ">>> ";
+
+    std::vector<std::string> lines;
+    while(addLinesInto(lines, std::cin)){
+        // If we are here then this means that a directive was called
+        std::string lastCommand = lines.back(); lines.pop_back();
+        
+        if(lastCommand == "@help"){
+            helpCommand();
+        }
+        else {
+            const auto& d_itr = directives.find(lastCommand);
+            if (d_itr == directives.end()) {
+                std::cout << "No such directive : " << lastCommand << std::endl;
+                std::cout << "Previous command has been maintained" << std::endl;
+            }
+            else {
+                Directive& directive = *(d_itr->second);
+                directive.execute(lines);
+
+                if(!shared::isRunning){
+                    break;
+                }
+            }
+        }
+
+        if(!lines.empty()){
+            std::cout << "\nYour command look currently like this:" << std::endl;
+            for(int i = 0; i < lines.size(); i++) {
+                std::cout << "line " << (i+1) << ") " << lines[i] << std::endl;
+            }
+            std::cout << "Use @clear to clear" << std::endl;
+        }
+        std::cout << "\n>>> ";
+    }
+
+    signal(SIGCHLD, SIG_DFL);
+    shared::adapt->exit();
+    waitForChildDeath(parentChildPipes);
+    print::FancyExit();
+
+    freeDirectives();
+}
+
+void executeInitialUser(){
+    const auto& d_itr = directives.find("@user");
+    assert(d_itr != directives.end());
+    
+    content temp;
+    d_itr->second->execute(temp);
+}
+
+// returns when a directive/EOF is encountered.
+// true means directive. false means EOF
 bool addLinesInto(std::vector<std::string>& lines, std::istream& in){
     std::string line;
     while(std::getline(in, line)){
@@ -25,115 +118,16 @@ bool addLinesInto(std::vector<std::string>& lines, std::istream& in){
     return false;
 }
 
-std::string joinWith(const std::vector<std::string>& lines, char join){
-    std::string command;
-    for(const auto& str : lines){
-        command += str;
-        command += join;
-    }
-    return command;
-}
-
-bool runCommand(const std::vector<std::string>& lines, std::ostream& toChild){
-    // Append all lines into a single string. Then send to parser
-
-    std::string command = joinWith(lines, '\n');
-
-    auto errors = checkLexParse(command.c_str());
-
-    if(errors.empty()){
-        std::string singleLinedCommand = joinWith(lines, ' ');
-        std::cout << "Sending to server" << std::endl;
-        toChild << "COMMAND" << std::endl;
-        toChild << singleLinedCommand << std::endl;
-        return true;
-    } 
-    else {
-        printAptErrorMessage(lines, errors);
-        return false;
+void freeDirectives(void){
+    for(const auto& dirPair : directives){
+        delete dirPair.second;
     }
 }
 
-struct ChildResponse {
-    std::string responseType;
-    size_t responseLength;
-    std::vector<std::string> responseLines;
-
-    friend std::ostream& operator<<(std::ostream& out, const ChildResponse& resp){
-        out << "ChildResponse[responseType=" << resp.responseType << ", responseLength=" << resp.responseLength << ", responseLines={";
-        for(const auto& line : resp.responseLines){
-            out << "\n\t" << line;
-        }        
-        return out << "\n}";
+void helpCommand(){
+    std::cout << "These are all the directives you can use : " << std::endl;
+    for(const auto& pr : directives){
+        std::cout << pr.first << "\n";
     }
-};
-
-ChildResponse expectResponse(std::istream& fromChild){
-    ChildResponse resp;
-    
-    if(!std::getline(fromChild, resp.responseType)){assert(false);}
-    
-    assert(fromChild >> resp.responseLength);
-    std::string throwaway;
-    if(!std::getline(fromChild, throwaway)){assert(false);}
-    
-    resp.responseLines.reserve(resp.responseLength);
-
-    std::string childLine;
-    for(size_t i = 0; i < resp.responseLength; i++){
-        std::getline(fromChild, childLine);
-        resp.responseLines.push_back(childLine);
-    }
-
-    return resp;
-}
-
-int main(){
-
-    // Spawn child process
-    auto parentChildPipes = createChild();
-	
-	__gnu_cxx::stdio_filebuf<char> inbuf(parentChildPipes.fdParentIn, std::ios::in);
-	std::istream fromChild(&inbuf);
-	
-	__gnu_cxx::stdio_filebuf<char> outbuf(parentChildPipes.fdParentOut, std::ios::out);
-	std::ostream toChild(&outbuf);
-	
-	signal(SIGCHLD, onAbruptChildExit);
-
-    // Begin accepting queries
-    printFancyHeader();
-    printInstructions();
-
-    std::vector<std::string> lines;
-    
-    std::cout << ">>> ";
-
-    while(addLinesInto(lines, std::cin)){
-        // If we are here then this means either @run or @quit was called
-        std::string lastCommand = lines.back(); lines.pop_back();
-
-        if(lastCommand == "@quit"){
-            break;
-        } 
-        else if (lastCommand == "@run"){
-            if(lines.empty()){
-                std::cout << "Empty command : nothing to send." << std::endl;
-            }
-            else {
-                if(runCommand(lines, toChild)){ // If command was succesful, expect a response
-                    ChildResponse resp = expectResponse(fromChild);
-                    std::cout << "Received Response : " << resp << std::endl;
-                }
-            }
-        }
-
-        lines.clear();
-        std::cout << ">>> ";
-    }
-
-    signal(SIGCHLD, SIG_DFL);
-    killChild(parentChildPipes);
-    printFancyExit();
-
+    std::cout << std::endl;
 }

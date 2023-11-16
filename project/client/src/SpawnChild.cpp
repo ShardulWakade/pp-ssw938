@@ -32,7 +32,6 @@ DoublePipe createChild(){
 	close(fdParentOut[0]);
 
 	return DoublePipe{fdParentIn[0], fdParentOut[1], pid};
-	
 }
 
 void killChild(DoublePipe toClose)
@@ -40,4 +39,9 @@ void killChild(DoublePipe toClose)
     kill(toClose.childPid, SIGTERM);
     close(toClose.fdParentIn);
     close(toClose.fdParentOut);
+}
+
+void waitForChildDeath(DoublePipe child){
+	int status;
+	wait(&status);	// only 1 child so pid isn't necessary.
 }

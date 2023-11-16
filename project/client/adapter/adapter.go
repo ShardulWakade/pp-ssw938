@@ -51,6 +51,7 @@ func main() {
 	messageParser["GET_LOGIN"] = onGET_LOGIN
 	messageParser["PING"] = onPING
 	messageParser["SHUTDOWN"] = onSHUTDOWN
+	messageParser["CLEAR_CACHE"] = onCLEAR_CACHE
 
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
@@ -107,6 +108,12 @@ func GetJSONBytes(resp *http.Response) []byte {
 	return body
 }
 
+func onCLEAR_CACHE(parentMessage Message) Message {
+	assert(len(parentMessage.MessageContent) == 0, "CLEAR_CACHE takes 0 lines")
+	cache.Clear()
+	return NewSuccessMessage()
+}
+
 func onSHUTDOWN(parentMessage Message) Message {
 	assert(len(parentMessage.MessageContent) == 0, "SHUTDOWN takes 0 lines")
 
@@ -139,9 +146,7 @@ func onPING(parentMessage Message) Message {
 
 	var pong string
 	if json.Unmarshal(jsonBytes, &pong) == nil { // This is a string
-		if pong == "pong" {
-			return NewSuccessMessage()
-		}
+		return NewSuccessMessage()
 	}
 
 	return NewUnexpectedResponseMessage("Unexpected response")

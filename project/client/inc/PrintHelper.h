@@ -4,13 +4,26 @@
 
 #pragma once
 
-#include "lp.h"
 #include <iostream>
 #include <vector>
 #include <string>
 
+#include "lp.h"
+#include "Types.h"
 
-void printFancyHeader();
-void printFancyExit();
-void printInstructions();
-void printAptErrorMessage(const std::vector<std::string>& lines, const std::vector<LexParseError>& errors);
+static inline std::string joinWith(const std::vector<std::string>& lines, char join){
+    std::string command;
+    for(const auto& str : lines){
+        command += str;
+        command += join;
+    }
+    return command;
+}
+
+namespace print {
+    void FancyHeader();
+    void FancyExit();
+    void Instructions();
+    void AptErrorMessage(const std::vector<std::string>& lines, const std::vector<LexParseError>& errors);
+    void Tabbed(const content& msgContent);
+}
