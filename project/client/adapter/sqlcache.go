@@ -1,26 +1,29 @@
 package main
 
 import (
-	"log"
+	"os"
 )
 
 type SQLCache struct {
-	responses    map[string][]string
-	currentGraph string
+	responses     map[string][]string
+	jsonResponses map[string]string
+	currentGraph  string
 }
 
 // Will establish connection to SQL database
 func NewSQLCache() *SQLCache {
-	return &SQLCache{responses: make(map[string][]string), currentGraph: ""}
+	return &SQLCache{responses: make(map[string][]string), jsonResponses: make(map[string]string), currentGraph: ""}
 }
 
 // This should try to access the database to see if it contains the query
-func (cache *SQLCache) Fetch(query string) ([]string, bool) {
+func (cache *SQLCache) Fetch(query string) ([]string, string, bool) {
 
 	if resp, prs := cache.responses[query]; prs {
-		return resp, true
+		jsonResp, p := cache.jsonResponses[query]
+		assert(p, "Only responses found without json.")
+		return resp, jsonResp, true
 	}
-	return nil, false
+	return nil, "", false
 }
 
 // This should try to clear the cache if the new graph from the server is different than the graph we have in mind.
@@ -38,12 +41,17 @@ func (cache *SQLCache) CheckIfInvalid() {
 // This will clear out the sql cache
 func (cache *SQLCache) Clear() {
 	cache.responses = make(map[string][]string)
+	cache.jsonResponses = make(map[string]string)
 }
 
 // Modify in memory and in file graph
 func (cache *SQLCache) SetNewGraph(graph string) {
 	cache.currentGraph = graph
-	log.Println("Writing to graph file:", graph)
+	os.WriteFile("../common/CompleteGraph.json", []byte(graph), 0644)
+}
+
+func WriteResponseToFile(jsonResponse string) {
+	os.WriteFile("../common/RecentResponse.json", []byte(jsonResponse), 0644)
 }
 
 // This will clear graph in memory and file
@@ -52,6 +60,7 @@ func (cache *SQLCache) ClearGraph() {
 }
 
 // This will store the current command-response into the database
-func (cache *SQLCache) Store(command string, response []string) {
+func (cache *SQLCache) Store(command string, response []string, jsonResp string) {
 	cache.responses[command] = response
+	cache.jsonResponses[command] = jsonResp
 }

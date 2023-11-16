@@ -186,7 +186,8 @@ func onSEND(parentMessage Message) Message {
 	command := parentMessage.MessageContent[0]
 
 	// first check if cache contains the message
-	if response, prs := cache.Fetch(command); prs {
+	if response, jsonResponse, prs := cache.Fetch(command); prs {
+		WriteResponseToFile(jsonResponse)
 		return NewCachedMessage(response)
 	}
 
@@ -198,11 +199,13 @@ func onSEND(parentMessage Message) Message {
 	}
 	defer resp.Body.Close()
 
-	serverMessage := ParsePostCypherResponse(GetJSONBytes(resp))
+	jsonResponse := string(GetJSONBytes(resp))
+	serverMessage := ParsePostCypherResponse([]byte(jsonResponse))
 
 	if serverMessage.MessageType == "RESPONSE" {
 		cache.CheckIfInvalid()
-		cache.Store(command, serverMessage.MessageContent)
+		WriteResponseToFile(jsonResponse)
+		cache.Store(command, serverMessage.MessageContent, jsonResponse)
 	}
 
 	return serverMessage
