@@ -4,6 +4,7 @@ go 1.18
 
 require (
 	github.com/gin-gonic/gin v1.9.1
+	github.com/mattn/go-sqlite3 v1.14.18
 	github.com/neo4j/neo4j-go-driver/v5 v5.14.0
 )
 

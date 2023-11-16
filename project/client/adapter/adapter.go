@@ -33,15 +33,15 @@ func SetLogOutputToFile() {
 	log.SetOutput(file)
 }
 
-var cache *SQLCache
+var cache Cache
 
 func main() {
 
-	SetLogOutputToFile()
+	// SetLogOutputToFile()
 
-	cache = NewSQLCache()
+	cache = NewCache()
 	cache.Clear()
-	cache.ClearGraph()
+	ClearGraph()
 
 	messageParser := make(map[string]func(Message) Message)
 
@@ -203,7 +203,7 @@ func onSEND(parentMessage Message) Message {
 	serverMessage := ParsePostCypherResponse([]byte(jsonResponse))
 
 	if serverMessage.MessageType == "RESPONSE" {
-		cache.CheckIfInvalid()
+		CheckIfInvalid(cache)
 		WriteResponseToFile(jsonResponse)
 		cache.Store(command, serverMessage.MessageContent, jsonResponse)
 	}
@@ -224,7 +224,7 @@ func onLOGOFF(parentMessage Message) Message {
 	returnMessage := ParsePostLogoffResponse(GetJSONBytes(resp))
 	if returnMessage.MessageType == "SUCCESS" {
 		cache.Clear()
-		cache.ClearGraph()
+		ClearGraph()
 	}
 	return returnMessage
 }
