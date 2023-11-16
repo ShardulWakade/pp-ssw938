@@ -35,8 +35,8 @@ int main(){
 
     // Spawn child process
     auto parentChildPipes = createChild();
-    AdaptConnection connection(parentChildPipes);
-    shared::adapt = &connection;
+    AdaptConnection connection(parentChildPipes);   // The name of the child program is Adapt.exe . I regret this naming but its too late
+    shared::adapt = &connection;    
    	signal(SIGCHLD, onAbruptChildExit);
 
     print::FancyHeader();

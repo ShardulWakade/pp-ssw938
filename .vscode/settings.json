@@ -1,10 +1,12 @@
 {
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
-        "lexer\\windows\\antlr-4.9.2-complete.jar"
+        "lexer\\windows\\antlr-4.9.2-complete.jar",
+        "project/textvisualizer/json-simple-1.1.1.jar"
     ],
     "java.project.sourcePaths": [
-        "lexer\\windows\\code"
+        "lexer\\windows\\code",
+        "project/textvisualizer"
     ],
     "files.associations": {
         "any": "cpp",

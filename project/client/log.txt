@@ -1,1 +1,1 @@
-[C=Node(Labels:[hello])]
+[C.radius=24 C=Node(Labels:[ball])]

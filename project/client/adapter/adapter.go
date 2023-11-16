@@ -37,7 +37,7 @@ var cache Cache
 
 func main() {
 
-	// SetLogOutputToFile()
+	SetLogOutputToFile()
 
 	cache = NewCache()
 	cache.Clear()
