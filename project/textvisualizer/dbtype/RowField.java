@@ -41,7 +41,7 @@ public class RowField {
 
     @Override
     public String toString() {
-        return "ResponseRow [field=" + field + ", valueType=" + valueType + ", valueString=" + valueString + "]";
+        return "RowField [field=" + field + ", valueType=" + valueType + ", valueString=" + valueString + "]";
     }
 
     @Override

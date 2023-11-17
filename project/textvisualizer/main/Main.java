@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
@@ -23,7 +24,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import dbtype.CorruptJSONException;
-import dbtype.FancyString;
 import dbtype.ResponseRow;
 import dbtype.RowField;
 
@@ -37,7 +37,7 @@ class Main {
         levels.put("visualize-verbose", FancyString.VERBOSE);
 
         JSONParser parser = new JSONParser();
-        File recentResponsesJSONFile = new File("project/common/RecentResponse.json");
+        File recentResponsesJSONFile = new File("../common/RecentResponse.json");
 
         System.out.println(System.getProperty("user.dir"));
 
@@ -82,12 +82,16 @@ class Main {
                     }
 
                     printResponseRows(rows, levels.get(line));
+                    printAverageForIntCoulmns(rows);
 
                 } catch (ClassCastException | ParseException | CorruptJSONException e) {
                     System.err.println("Corrupted json file.");
                     e.printStackTrace();
                 } catch (IOException e) {
                     System.err.println("File error occured while reading " + recentResponsesJSONFile);
+                } catch (Exception e) {
+                    System.err.println("Internal Error : ");
+                    e.printStackTrace();
                 }
             }
             System.out.print("\n> ");
@@ -95,6 +99,41 @@ class Main {
 
         sc.close();
         printExit();
+    }
+
+    private static void printAverageForIntCoulmns(List<ResponseRow> rows) {
+        if(rows.isEmpty()){
+            return;
+        }
+        
+        Set<Integer> intColumns = new TreeSet<>();
+        for(ResponseRow row : rows){
+            List<RowField> fields = row.getRowFields();
+            for(int i = 0; i < fields.size(); i++){
+                RowField field = fields.get(i);
+                if(field.getValueType().equals("int64")){
+                    intColumns.add(i);
+                }
+            }
+        }
+
+        List<RowField> fields = rows.get(0).getRowFields();
+
+        for(int intColumnIndex : intColumns){
+            
+            long sum = 0;
+            int valueCount = 0;     // Not all entries in this so called "int" column may be integers.
+
+            for(ResponseRow row : rows){
+                Object val = row.getRowValues().get(intColumnIndex);
+                if(val instanceof Long){
+                    sum += (Long)val;
+                    valueCount++;
+                }
+            }
+
+            System.out.println("Average of all " + fields.get(intColumnIndex).getField() + "s = " + (sum/(double)valueCount));
+        }
     }
 
     private static void printHelp() {

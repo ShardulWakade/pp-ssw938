@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.json.simple.JSONObject;
 
+import main.FancyString;
+
 /*
  // Relationship represents a relationship in the neo4j graph database
     type Relationship struct {

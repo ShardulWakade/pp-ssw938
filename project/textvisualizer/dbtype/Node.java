@@ -1,12 +1,12 @@
 package dbtype;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import main.FancyString;
 
 /*
  * // Node represents a node in the neo4j graph database
