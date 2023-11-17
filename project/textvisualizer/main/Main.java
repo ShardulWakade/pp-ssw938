@@ -10,10 +10,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,12 +23,19 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import dbtype.CorruptJSONException;
-import dbtype.OrderEnforcer;
+import dbtype.FancyString;
 import dbtype.ResponseRow;
+import dbtype.RowField;
 
 class Main {
 
+    private static Map<String, Integer> levels = new HashMap<>();
     public static void main(String[] args) {
+
+        levels.put("visualize-brief", FancyString.BRIEF);
+        levels.put("visualize", FancyString.DEFAULT);
+        levels.put("visualize-verbose", FancyString.VERBOSE);
+
         JSONParser parser = new JSONParser();
         File recentResponsesJSONFile = new File("project/common/RecentResponse.json");
 
@@ -38,13 +47,14 @@ class Main {
         printIntroduction();
         System.out.print("\n> ");
 
-        while(!(line = sc.nextLine()).equalsIgnoreCase("quit")) {
-            if (line.equalsIgnoreCase("help")) {
-                System.out.println("Enter \n\"quit\" to exit the program. \n\"visualize\" "
-                        + "to get a text based visualization of the most recent response.");
-            } else if (!line.equalsIgnoreCase("visualize")) {
+        while(!(line = sc.nextLine()).equals("quit")) {
+            if (line.equals("help")) {
+                printHelp();
+            } 
+            else if (!levels.containsKey(line)) {
                 System.out.println("Did not understand command : " + line + "\nType \"help\" for help.");
-            } else {
+            } 
+            else {
                 try {
                     Object parsedJSONArray;
                     try (BufferedReader reader = new BufferedReader(new FileReader(recentResponsesJSONFile))) {
@@ -65,13 +75,13 @@ class Main {
                     // So we structure from the second element upto the last and use the first
                     // element as a guide
                     if (!rows.isEmpty()) {
-                        OrderEnforcer enforcer = new OrderEnforcer(rows.get(0).getRowFields());
+                        List<RowField> idealOrder = rows.get(0).getRowFields();
                         for (int i = 1; i < rows.size(); i++) {
-                            rows.get(i).enforceOrder(enforcer);
+                            rows.get(i).enforceOrder(idealOrder);
                         }
                     }
 
-                    printResponseRows(rows);
+                    printResponseRows(rows, levels.get(line));
 
                 } catch (ClassCastException | ParseException | CorruptJSONException e) {
                     System.err.println("Corrupted json file.");
@@ -87,6 +97,14 @@ class Main {
         printExit();
     }
 
+    private static void printHelp() {
+        System.out.println("visualize:          Gives a visualization of the most recent response.");
+        System.out.println("visualize-brief:    Gives a very short description of each entity.");
+        System.out.println("visualize-verbose:  Gives a detailed description of each entry.");
+        System.out.println("quit:               Quits the program.");
+        System.out.println("help:               Displays the help menu.");
+    }
+
     private static void printExit() {
         System.out.println("THANK YOU!");
     }
@@ -98,8 +116,74 @@ class Main {
                 "Use \"quit\" to quit the program, \"visualize\" to visualize the latest response, and \"help\" for more info.");
     }
 
-    private static void printResponseRows(List<ResponseRow> rows) {
-        System.out.println(rows); // TODO.
+    private static String toFancyString(Object obj, int level){
+        if(obj instanceof FancyString){
+            return ((FancyString)obj).fancy(level);
+        }
+        return obj.toString();
+    }
+
+    private static String createUniform(char repeat, int times) {
+        assert(times >= 0);
+        char[] ch = new char[times];
+        for(int i = 0; i < times; i++){
+            ch[i] = repeat;
+        }
+        return new String(ch);
+    }
+
+    private static void printRow(List<String> row, int[] maxLengths){
+        for(int i = 0; i < maxLengths.length; i++){
+            int currentMaxLength = maxLengths[i];
+            int currentLength = row.get(i).length();
+            int spacesBefore = (currentMaxLength - currentLength) / 2;
+            int spacesAfter = (currentMaxLength - currentLength + 1) / 2;
+
+            System.out.print("| " + createUniform(' ', spacesBefore) + row.get(i) + createUniform(' ', spacesAfter) + " ");
+        }
+        System.out.println("|");
+    }
+
+    private static void printResponseRows(List<ResponseRow> rows, final int level) {
+        if(rows.isEmpty()){
+            System.out.println("Empty response... nothing to visualize.");
+            return;
+        }
+        
+        ArrayList<List<String>> stringsToPrint = new ArrayList<>();
+        List<RowField> fields = rows.get(0).getRowFields();
+
+        // Rows header
+        stringsToPrint.add(fields.stream().map(RowField::getField).collect(Collectors.toList()));
+        
+        for(ResponseRow row : rows){
+            stringsToPrint.add(row.getRowValues().stream().map(val -> toFancyString(val, level)).collect(Collectors.toList()));
+        }
+
+        // Now we have a matrix of strings to print.
+        // For now, lets just print each of them seperately for testing.
+
+        // Now calculate the max lengths of each column and use that to come up with a grid.
+        int[] maxLengths = new int[fields.size()];
+        int totalWidth = 1;
+
+        for(int i = 0; i < maxLengths.length; i++){
+            final int i_copy = i;
+            maxLengths[i] = stringsToPrint.stream().mapToInt(list -> list.get(i_copy).length()).max().orElse(0);
+            totalWidth += maxLengths[i] + 3;
+        }
+
+        String seperator = createUniform('-', totalWidth);
+        List<String> headers = stringsToPrint.get(0);
+        System.out.println(seperator);
+        printRow(headers, maxLengths);
+        System.out.println(seperator);
+
+        for(int i = 1; i < stringsToPrint.size(); i++){
+            printRow(stringsToPrint.get(i), maxLengths);
+        }
+
+        System.out.println(seperator);
     }
 
     // For debugging purposes.

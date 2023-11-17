@@ -1,7 +1,9 @@
 package dbtype;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,7 +22,7 @@ import org.json.simple.JSONObject;
 /*
 *   A node is a graph node with attributes as given in db.types from golang.
 */
-public class Node {
+public class Node implements FancyString {
 
     public static Node FromMap(Map map) {
         ParseUtils.ensureMapContainsKeys(map, "Id", "ElementId", "Labels", "Props");
@@ -45,6 +47,11 @@ public class Node {
         Props = props;
     }
 
+    @Override
+    public String toString() {
+        return "Node [Id=" + Id + ", ElementId=" + ElementId + ", Labels=" + Labels + ", Props=" + Props + "]";
+    }
+
     public Long getId() {
         return Id;
     }
@@ -59,6 +66,19 @@ public class Node {
 
     public Map<String, Object> getProps() {
         return Props;
+    }
+
+    @Override
+    public String fancy(int level) {
+        if(level <= FancyString.BRIEF){
+            return "Node";
+        }
+        if(level <= FancyString.DEFAULT){
+            return "Node(" + ParseUtils.labelsString(Labels) + ")";
+        }
+        // This means highest level i.e most detail.
+        return "Node(" + ParseUtils.labelsString(Labels) + " {" + ParseUtils.propsString(Props) + "})";
+
     }
 
 }

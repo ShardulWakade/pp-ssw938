@@ -21,7 +21,7 @@ import org.json.simple.JSONObject;
     } 
  */
 
-public class Relationship {
+public class Relationship implements FancyString {
 
     public static Relationship FromMap(Map map) {
         ParseUtils.ensureMapContainsKeys(map, "Id", "ElementId", "StartId", "StartElementId", "EndId", "EndElementId", "Type", "Props");
@@ -82,6 +82,25 @@ public class Relationship {
     }
     public Map<String, Object> getProps() {
         return Props;
+    }
+
+    @Override
+    public String toString() {
+        return "Relationship [Id=" + Id + ", ElementId=" + ElementId + ", StartId=" + StartId + ", StartElementId="
+                + StartElementId + ", EndId=" + EndId + ", EndElementId=" + EndElementId + ", Type=" + Type + ", Props="
+                + Props + "]";
+    }
+
+    @Override
+    public String fancy(int level) {
+        if(level <= FancyString.BRIEF){
+            return "Edge";
+        }
+        if(level <= FancyString.DEFAULT){
+            return "Edge[:" + Type + "]";
+        }
+        // This means highest level i.e most detail.
+        return "Edge[:" + Type + " {" + ParseUtils.propsString(Props) + "}]";
     }
 
 }

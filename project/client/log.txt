@@ -1,1 +1,1 @@
-[C.radius=24 C=Node(Labels:[ball])]
+[C=Node(Labels:[City]) C.name="Mumbai" R=Edge[Type:edge]]
