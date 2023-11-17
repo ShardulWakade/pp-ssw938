@@ -16,19 +16,20 @@ cd lp
 ./build.sh
 cd ..
 
-echo "Building Client Program (language = C/C++ for now, though might change to java)"
+echo "Building Client Program"
 
 cd client
 ./build.sh
 cd ..
-
-echo -e "\nBuild finished successfully."
-echo -e "\nTo test out the Client program, use testClient.sh\n\n" 
 
 echo "Building server"
 cd server
 ./build.sh
 cd ..
 
+echo "Building text visualizer"
+cd textvisualizer
+./build.sh
+cd ..
 
 

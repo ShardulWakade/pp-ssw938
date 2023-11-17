@@ -1,1 +1,0 @@
-[C.int3=<nil> C.int1=2 C.int2=<nil> C=Node(Labels:[testInt])]
